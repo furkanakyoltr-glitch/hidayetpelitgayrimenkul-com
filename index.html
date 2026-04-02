@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,300;1,6..96,400;1,6..96,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -484,6 +483,71 @@
       .form-row { grid-template-columns: 1fr; }
       .buy-form-card { padding: 32px 24px; }
     }
+
+    /* ───────── LISTING CARDS GRID ───────── */
+    .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 56px; }
+    @media(max-width:800px){ .cards-grid { grid-template-columns: 1fr; } }
+    .listing-summary-card { background: var(--white); overflow: hidden; box-shadow: var(--shadow); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; }
+    .listing-summary-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .card-img-wrap { position: relative; height: 280px; overflow: hidden; }
+    .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+    .listing-summary-card:hover .card-img-wrap img { transform: scale(1.05); }
+    .card-badge { position: absolute; top: 16px; left: 16px; padding: 5px 14px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+    .badge-satilik { background: var(--champagne); color: var(--dark); }
+    .badge-kiralik { background: #2d6a4f; color: #fff; }
+    .card-body { padding: 28px; }
+    .card-price { font-family: 'Bodoni Moda', serif; font-size: 1.6rem; font-weight: 500; color: var(--champagne); line-height: 1; margin-bottom: 6px; }
+    .card-title { font-family: 'Bodoni Moda', serif; font-size: 1.05rem; font-weight: 400; color: var(--dark); margin-bottom: 6px; }
+    .card-loc { display: flex; align-items: center; gap: 5px; color: var(--muted); font-size: 0.78rem; margin-bottom: 18px; }
+    .card-loc svg { width: 12px; height: 12px; fill: var(--champagne); }
+    .card-mini-specs { display: flex; gap: 18px; margin-bottom: 22px; }
+    .mini-spec { text-align: center; }
+    .mini-spec-val { font-size: 1rem; font-weight: 600; color: var(--dark); font-family: 'Bodoni Moda', serif; }
+    .mini-spec-lbl { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+    .card-separator { height: 1px; background: var(--cream-mid); margin-bottom: 22px; }
+    .btn-card-detail { width: 100%; background: var(--dark); color: var(--white); border: none; padding: 13px; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; transition: background 0.25s; }
+    .btn-card-detail:hover { background: var(--champagne); color: var(--dark); }
+
+    /* ───────── DETAIL MODAL ───────── */
+    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); align-items: stretch; justify-content: flex-end; }
+    .modal-overlay.open { display: flex; }
+    .modal-panel { width: min(780px, 100%); background: var(--white); overflow-y: auto; position: relative; display: flex; flex-direction: column; animation: slideIn 0.35s cubic-bezier(.22,.68,0,1.05); }
+    @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    .modal-close { position: absolute; top: 20px; right: 20px; z-index: 10; background: rgba(14,14,14,0.6); border: none; color: #fff; width: 38px; height: 38px; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; font-family: sans-serif; }
+    .modal-close:hover { background: var(--champagne); color: var(--dark); }
+    .modal-gallery { position: relative; height: 420px; overflow: hidden; flex-shrink: 0; }
+    .modal-gallery img { width: 100%; height: 100%; object-fit: cover; }
+    .modal-gallery-badge { position: absolute; top: 20px; left: 20px; padding: 6px 16px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+    .modal-thumbs { display: flex; gap: 4px; padding: 4px; background: var(--dark); overflow-x: auto; flex-shrink: 0; }
+    .modal-thumbs::-webkit-scrollbar { height: 2px; }
+    .modal-thumbs::-webkit-scrollbar-thumb { background: var(--champagne); }
+    .modal-thumb { width: 80px; height: 60px; object-fit: cover; cursor: pointer; opacity: 0.5; transition: opacity 0.2s; flex-shrink: 0; outline: 2px solid transparent; outline-offset: -2px; }
+    .modal-thumb.active, .modal-thumb:hover { opacity: 1; outline-color: var(--champagne); }
+    .modal-body { padding: 36px; flex: 1; }
+    .modal-price { font-family: 'Bodoni Moda', serif; font-size: 2rem; font-weight: 500; color: var(--champagne); line-height: 1; margin-bottom: 8px; }
+    .modal-title { font-family: 'Bodoni Moda', serif; font-size: 1.4rem; font-weight: 400; color: var(--dark); margin-bottom: 6px; }
+    .modal-loc { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 0.82rem; margin-bottom: 28px; }
+    .modal-loc svg { width: 14px; height: 14px; fill: var(--champagne); }
+    .modal-specs { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--cream-mid); margin-bottom: 28px; }
+    .modal-spec { background: var(--white); padding: 14px 16px; }
+    .modal-spec-lbl { font-size: 0.62rem; color: var(--muted); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 4px; }
+    .modal-spec-val { font-size: 0.95rem; font-weight: 500; color: var(--dark); }
+    .modal-features { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .modal-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-modal-cta { background: var(--dark); color: var(--white); padding: 13px 28px; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.25s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-modal-cta:hover { background: var(--champagne); color: var(--dark); }
+    .btn-modal-outline { background: transparent; color: var(--dark); padding: 12px 24px; border: 1px solid rgba(0,0,0,0.15); font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.25s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-modal-outline:hover { border-color: var(--champagne); color: var(--champagne); }
+    /* counter badge in modal gallery */
+    .modal-img-counter { position: absolute; bottom: 16px; right: 16px; background: rgba(14,14,14,0.7); color: rgba(255,255,255,0.8); padding: 5px 12px; font-size: 0.72rem; letter-spacing: 0.06em; backdrop-filter: blur(4px); }
+    .modal-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(14,14,14,0.5); border: none; color: rgba(255,255,255,0.8); font-size: 1.5rem; padding: 14px 16px; cursor: pointer; transition: background 0.2s; z-index: 5; }
+    .modal-nav:hover { background: var(--champagne); color: var(--dark); }
+    .modal-nav-prev { left: 0; }
+    .modal-nav-next { right: 0; }
+
+    /* ───────── GOOGLE MAP ───────── */
+    .gmap-wrap { width: 100%; overflow: hidden; display: block; }
+    .gmap-wrap iframe { width: 100%; height: 460px; border: 0; display: block; filter: grayscale(15%); }
   </style>
 </head>
 <body>
@@ -585,65 +649,88 @@
   <div class="sec-eyebrow">Güncel İlanlar</div>
   <div class="sec-title">Öne Çıkan <em>Mülkler</em></div>
 
-  <div class="listing-card">
-    <div class="gallery-main" onclick="openLightbox(0)" id="galleryMain">
-      <img id="mainImg" src="images/x5_1226615918kab.jpg" alt="Mordoğan Villa">
-      <div class="gallery-badge">Satılık</div>
-      <div class="gallery-count" id="galleryCount">1 / 10</div>
-    </div>
-    <div class="gallery-thumbs">
-      <img class="thumb-img active" src="images/x5_1226615918kab.jpg" onclick="changeMain(this,'images/x5_1226615918kab.jpg',0)" alt="">
-      <img class="thumb-img" src="images/x5_1226615918c67.jpg" onclick="changeMain(this,'images/x5_1226615918c67.jpg',1)" alt="">
-      <img class="thumb-img" src="images/x5_1226615918mrc.jpg" onclick="changeMain(this,'images/x5_1226615918mrc.jpg',2)" alt="">
-      <img class="thumb-img" src="images/x5_1226615918n23.jpg" onclick="changeMain(this,'images/x5_1226615918n23.jpg',3)" alt="">
-      <img class="thumb-img" src="images/x5_1226615918fvd.jpg" onclick="changeMain(this,'images/x5_1226615918fvd.jpg',4)" alt="">
-      <img class="thumb-img" src="images/x5_1226615918gz9.jpg" onclick="changeMain(this,'images/x5_1226615918gz9.jpg',5)" alt="">
-      <img class="thumb-img" src="images/x5_1226615918dx7.jpg" onclick="changeMain(this,'images/x5_1226615918dx7.jpg',6)" alt="">
-      <img class="thumb-img" src="images/x5_1226615918e03.jpg" onclick="changeMain(this,'images/x5_1226615918e03.jpg',7)" alt="">
-      <img class="thumb-img" src="images/x5_1226615918b77.jpg" onclick="changeMain(this,'images/x5_1226615918b77.jpg',8)" alt="">
-      <img class="thumb-img" src="images/x5_1226615918xv8.jpg" onclick="changeMain(this,'images/x5_1226615918xv8.jpg',9)" alt="">
-    </div>
-    <div class="listing-body">
-      <div class="listing-top">
-        <div class="listing-title-block">
-          <div class="listing-price">14.250.000 TL</div>
-          <div class="listing-title">Mordoğan AR-KO Sitesi — Deniz Manzaralı Sıfır Villa</div>
-          <div class="listing-location">
-            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            Mordoğan, Urla / İzmir
-          </div>
+  <div class="cards-grid">
+    <!-- Kart 1: Mordoğan Satılık Villa -->
+    <div class="listing-summary-card" onclick="openModal(0)">
+      <div class="card-img-wrap">
+        <img src="images/x5_1226615918kab.jpg" alt="Mordoğan Villa">
+        <div class="card-badge badge-satilik">Satılık</div>
+      </div>
+      <div class="card-body">
+        <div class="card-price">14.250.000 TL</div>
+        <div class="card-title">Mordoğan AR-KO Sitesi — Deniz Manzaralı Villa</div>
+        <div class="card-loc">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          Mordoğan, Urla / İzmir
         </div>
+        <div class="card-mini-specs">
+          <div class="mini-spec"><div class="mini-spec-val">4+1</div><div class="mini-spec-lbl">Oda</div></div>
+          <div class="mini-spec"><div class="mini-spec-val">3</div><div class="mini-spec-lbl">Kat</div></div>
+          <div class="mini-spec"><div class="mini-spec-val">Sıfır</div><div class="mini-spec-lbl">Bina Yaşı</div></div>
+          <div class="mini-spec"><div class="mini-spec-val">2</div><div class="mini-spec-lbl">Banyo</div></div>
+        </div>
+        <div class="card-separator"></div>
+        <button class="btn-card-detail">Detayları Gör &rsaquo;</button>
       </div>
-      <div class="listing-specs">
-        <div class="spec-item"><div class="spec-label">Oda</div><div class="spec-value">4 + 1</div></div>
-        <div class="spec-item"><div class="spec-label">Bina Yaşı</div><div class="spec-value">Sıfır</div></div>
-        <div class="spec-item"><div class="spec-label">Kat Sayısı</div><div class="spec-value">3</div></div>
-        <div class="spec-item"><div class="spec-label">Banyo</div><div class="spec-value">2</div></div>
-        <div class="spec-item"><div class="spec-label">Isıtma</div><div class="spec-value">Kat Kaloriferi</div></div>
-        <div class="spec-item"><div class="spec-label">Site Adı</div><div class="spec-value">AR-KO Sitesi</div></div>
-        <div class="spec-item"><div class="spec-label">Aidat</div><div class="spec-value">1.500 TL</div></div>
-        <div class="spec-item"><div class="spec-label">Tapu</div><div class="spec-value">Müstakil</div></div>
+    </div>
+
+    <!-- Kart 2: Seyrek Kiralık Dubleks -->
+    <div class="listing-summary-card" onclick="openModal(1)">
+      <div class="card-img-wrap">
+        <img src="https://imaj.emlakjet.com/listing/19139401/DCA9FA5B0713924B00F45F8ABCE53D5C19139401.jpg" alt="Seyrek Dubleks">
+        <div class="card-badge badge-kiralik">Kiralık</div>
       </div>
-      <div class="listing-features">
-        <span class="feature-tag">Deniz Manzarası</span>
-        <span class="feature-tag">Balkon</span>
-        <span class="feature-tag">Amerikan Mutfak</span>
-        <span class="feature-tag">Müstakil Kat</span>
-        <span class="feature-tag">Krediye Uygun</span>
-        <span class="feature-tag">Takasa Uygun</span>
-        <span class="feature-tag">Boş</span>
-        <span class="feature-tag">Site İçinde</span>
-      </div>
-      <div class="listing-actions">
-        <a href="#al" class="btn-dark">Bilgi Talep Et</a>
-        <a href="tel:+905366933271" class="btn-outline-dark">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-          Hemen Ara
-        </a>
+      <div class="card-body">
+        <div class="card-price">40.000 TL<span style="font-size:0.9rem;font-weight:300;color:var(--muted)">/ay</span></div>
+        <div class="card-title">Seyrek'te 3+1 Çatı Dubleks — Sıfır Daire</div>
+        <div class="card-loc">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          Seyrek, Menemen / İzmir
+        </div>
+        <div class="card-mini-specs">
+          <div class="mini-spec"><div class="mini-spec-val">3+1</div><div class="mini-spec-lbl">Oda</div></div>
+          <div class="mini-spec"><div class="mini-spec-val">120 m²</div><div class="mini-spec-lbl">Net Alan</div></div>
+          <div class="mini-spec"><div class="mini-spec-val">Sıfır</div><div class="mini-spec-lbl">Bina Yaşı</div></div>
+          <div class="mini-spec"><div class="mini-spec-val">2</div><div class="mini-spec-lbl">Banyo</div></div>
+        </div>
+        <div class="card-separator"></div>
+        <button class="btn-card-detail">Detayları Gör &rsaquo;</button>
       </div>
     </div>
   </div>
 </section>
+
+<!-- ═══ DETAIL MODAL ═══ -->
+<div class="modal-overlay" id="modalOverlay" onclick="modalOutside(event)">
+  <div class="modal-panel" id="modalPanel">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-gallery" id="modalGallery">
+      <img id="modalMainImg" src="" alt="">
+      <div class="modal-img-counter" id="modalCounter">1 / 10</div>
+      <button class="modal-nav modal-nav-prev" onclick="modalImgNav(-1,event)">‹</button>
+      <button class="modal-nav modal-nav-next" onclick="modalImgNav(1,event)">›</button>
+      <div class="modal-gallery-badge" id="modalBadge"></div>
+    </div>
+    <div class="modal-thumbs" id="modalThumbs"></div>
+    <div class="modal-body">
+      <div class="modal-price" id="modalPrice"></div>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-loc" id="modalLoc">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="#c4a46b"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <span id="modalLocText"></span>
+      </div>
+      <div class="modal-specs" id="modalSpecs"></div>
+      <div class="modal-features" id="modalFeatures"></div>
+      <div class="modal-actions">
+        <a href="#sat" class="btn-modal-cta" onclick="closeModal()">Bilgi Talep Et</a>
+        <a href="tel:+905366933271" class="btn-modal-outline">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          +90 536 693 32 71
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ═══ MAP ═══ -->
 <section class="map-section" id="konum">
@@ -652,7 +739,15 @@
     <div class="sec-title" style="color:var(--white)">Ofisimiz <em>Çiğli'de</em></div>
     <div class="sec-desc">Küçük Çiğli Mahallesi, 8708/1 Sk. No:7 B, Çiğli / İzmir adresinde hizmetinizdeyiz.</div>
   </div>
-  <div id="map"></div>
+  <div class="gmap-wrap">
+    <iframe
+      src="https://maps.google.com/maps?q=Küçük+Çiğli+Mahallesi+8708+Sk+No+7+Çiğli+İzmir+Türkiye&output=embed&z=16&hl=tr"
+      allowfullscreen
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Hidayet Pelit Gayrimenkul Ofis Konumu">
+    </iframe>
+  </div>
   <div class="map-bar">
     <div class="map-bar-item">
       <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
@@ -894,97 +989,166 @@
   </div>
 </footer>
 
-<!-- ═══ LIGHTBOX ═══ -->
-<div class="lightbox" id="lightbox" onclick="lbOutside(event)">
-  <button class="lb-close" onclick="closeLB()">✕</button>
-  <button class="lb-nav lb-prev" onclick="lbNav(-1)">‹</button>
-  <img class="lightbox-img" id="lbImg" src="" alt="">
-  <button class="lb-nav lb-next" onclick="lbNav(1)">›</button>
-</div>
-
 <!-- ═══ TOAST ═══ -->
 <div class="toast" id="toast"></div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WPaA=" crossorigin=""></script>
 <script>
   // NAV SCROLL
   window.addEventListener('scroll', () => {
     document.getElementById('nav').classList.toggle('scrolled', scrollY > 40);
   });
 
-  // MAP — Çiğli / İzmir ofis konumu
-  const map = L.map('map', { scrollWheelZoom: false, zoomControl: false })
-    .setView([38.4920, 27.0455], 15);
-
-  L.control.zoom({ position: 'bottomright' }).addTo(map);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: 19
-  }).addTo(map);
-
-  const pinIcon = L.divIcon({
-    className: '',
-    html: `<div style="position:relative;width:44px;height:44px">
-      <div style="width:44px;height:44px;background:#c4a46b;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(196,164,107,0.5)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="#0e0e0e"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      </div>
-      <div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid #c4a46b"></div>
-    </div>`,
-    iconSize: [44, 52], iconAnchor: [22, 52], popupAnchor: [0, -54]
-  });
-
-  L.marker([38.4920, 27.0455], { icon: pinIcon })
-    .addTo(map)
-    .bindPopup(`
-      <div style="font-family:'Jost',sans-serif;padding:4px">
-        <strong style="font-size:0.9rem;color:#0e0e0e">Hidayet Pelit Gayrimenkul</strong><br>
-        <small style="color:#7a7166">Küçük Çiğli Mah. 8708/1 Sk. No:7 B<br>Çiğli / İzmir</small>
-      </div>
-    `, { maxWidth: 220 })
-    .openPopup();
-
-  // GALLERY
-  const images = [
-    'images/x5_1226615918kab.jpg','images/x5_1226615918c67.jpg',
-    'images/x5_1226615918mrc.jpg','images/x5_1226615918n23.jpg',
-    'images/x5_1226615918fvd.jpg','images/x5_1226615918gz9.jpg',
-    'images/x5_1226615918dx7.jpg','images/x5_1226615918e03.jpg',
-    'images/x5_1226615918b77.jpg','images/x5_1226615918xv8.jpg'
+  // ═══ LISTING DATA ═══
+  const LISTINGS = [
+    {
+      badge: 'SATILIK', badgeClass: 'badge-satilik',
+      price: '14.250.000 TL', priceNote: '',
+      title: 'Mordoğan AR-KO Sitesi — Deniz Manzaralı Sıfır Villa',
+      loc: 'Mordoğan, Urla / İzmir',
+      images: [
+        'images/x5_1226615918kab.jpg','images/x5_1226615918c67.jpg',
+        'images/x5_1226615918mrc.jpg','images/x5_1226615918n23.jpg',
+        'images/x5_1226615918fvd.jpg','images/x5_1226615918gz9.jpg',
+        'images/x5_1226615918dx7.jpg','images/x5_1226615918e03.jpg',
+        'images/x5_1226615918b77.jpg','images/x5_1226615918xv8.jpg'
+      ],
+      specs: [
+        {l:'Oda',v:'4 + 1'},{l:'Bina Yaşı',v:'Sıfır'},{l:'Kat Sayısı',v:'3'},
+        {l:'Banyo',v:'2'},{l:'Isıtma',v:'Kat Kaloriferi'},{l:'Site',v:'AR-KO Sitesi'},
+        {l:'Aidat',v:'1.500 TL/ay'},{l:'Tapu',v:'Müstakil'},{l:'Durum',v:'Boş'}
+      ],
+      features:['Deniz Manzarası','Balkon','Amerikan Mutfak','Müstakil Kat','Krediye Uygun','Takasa Uygun','Site İçinde']
+    },
+    {
+      badge: 'KİRALIK', badgeClass: 'badge-kiralik',
+      price: '40.000 TL/ay', priceNote: 'Depozito: 35.000 TL',
+      title: 'Seyrek\'te 3+1 Çatı Dubleks — Sıfır Daire',
+      loc: 'Seyrek (İnönü Mah.), Menemen / İzmir',
+      images: [
+        'https://imaj.emlakjet.com/listing/19139401/DCA9FA5B0713924B00F45F8ABCE53D5C19139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/02401B484D549F2B523F1782FF086E0119139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/050084D25324B12ECDDB562DCC3C12BD19139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/0CB0968408CA011E2CF9C139FCBF81E619139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/10DE09B4C65BCC2981156C2C5B58E6C619139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/17CF82803CF6CC8AAC2396705D07404619139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/1B4EC443A610C7A9BAB18639B1A42BDF19139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/265692349BF1C9A0151C325FBA0AA2DF19139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/2860B408BC4E8D1A18B8D8704795842319139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/2CC0D65F1741517BDA0E6F7F5CE72A1119139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/318F307497E9638A419CABAEABC3CE7919139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/3FDCEBD723B7877FFA9953DD56BC911019139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/460A542020DEE7C65D91E369F1A31B3E19139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/466E9C2EF9167DE2B6BEE9C8F511CD5819139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/47041E962D8CD254513CCB38D300928919139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/481CD783F3D46FF1C870324D5D96DCD219139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/53A28B0D032F3D8C394BECC4FC5DFDCD19139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/5BBCD1AF8E89D3D1AB14D8112F4B0A3619139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/5F1031ACDA5B5227D4CFD4BE42B714B219139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/618A2896C397CE356F631F9FA104CBB619139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/6FA725FF5F43B4445632D04F44FFBFDD19139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/7646A5C6831815EEE704A55E9E054DC119139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/7E3D1908643EA3D6B7EB0CED958C184C19139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/8C07CB0BD978038CDEA950747091BBA619139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/A1F37C5CC211CAD29A9B7C5D9D1DD4C419139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/A959C8D5F713BD621A4171C838EE3DBE19139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/B5ACC9649B4CF2C8E33973BE5B6108FD19139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/B9C67F910408D08ECD8918D2DFAE993C19139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/BBE1F207400918DE44C6A5E6BFB1428819139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/C7A52C920201467977A25E5B7B1C0FC219139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/D301542EB8D6CD11056081644D803CAB19139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/D72C9D02059EDAE387730A1108A6BF3D19139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/E1EB539B793BF8B98C00A46A940BA49A19139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/F0EF7A303F86B40023C25D45BB4261D119139401.jpg',
+        'https://imaj.emlakjet.com/listing/19139401/F6ED2E2B28EDAE032A39BC4FEC65A1E119139401.jpg'
+      ],
+      specs: [
+        {l:'Oda',v:'3 + 1'},{l:'Tip',v:'Çatı Dubleks'},{l:'Net Alan',v:'120 m²'},
+        {l:'Brüt Alan',v:'130 m²'},{l:'Bina Yaşı',v:'Sıfır'},{l:'Kat Sayısı',v:'4'},
+        {l:'Banyo',v:'2'},{l:'Aidat',v:'500 TL/ay'},{l:'Isıtma',v:'Kombi (Doğalgaz)'}
+      ],
+      features:['Çatı Katı','2 Balkon','Ankastre Mutfak','Çelik Kapı','Fiber İnternet','Uydu/Kablo TV','Boş','Eşyasız']
+    }
   ];
-  let curIdx = 0;
 
-  function changeMain(el, src, idx) {
-    document.getElementById('mainImg').src = src;
-    document.getElementById('galleryCount').textContent = (idx + 1) + ' / ' + images.length;
-    document.querySelectorAll('.thumb-img').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    curIdx = idx;
-  }
+  let modalCurIdx = 0;
+  let modalCurListing = 0;
 
-  function openLightbox(idx) {
-    curIdx = idx;
-    document.getElementById('lbImg').src = images[curIdx];
-    document.getElementById('lightbox').classList.add('open');
+  function openModal(listingIdx) {
+    modalCurListing = listingIdx;
+    modalCurIdx = 0;
+    const d = LISTINGS[listingIdx];
+    const imgs = d.images;
+
+    // Badge
+    const badgeEl = document.getElementById('modalBadge');
+    badgeEl.textContent = d.badge;
+    badgeEl.className = 'modal-gallery-badge ' + d.badgeClass;
+
+    // Main image
+    document.getElementById('modalMainImg').src = imgs[0];
+    document.getElementById('modalCounter').textContent = '1 / ' + imgs.length;
+
+    // Thumbnails
+    const thumbsEl = document.getElementById('modalThumbs');
+    thumbsEl.innerHTML = '';
+    imgs.forEach((src, i) => {
+      const img = document.createElement('img');
+      img.src = src; img.className = 'modal-thumb' + (i===0?' active':'');
+      img.onclick = () => setModalImg(i);
+      thumbsEl.appendChild(img);
+    });
+
+    // Text
+    document.getElementById('modalPrice').textContent = d.price;
+    if (d.priceNote) {
+      const note = document.createElement('div');
+      note.style.cssText = 'font-size:0.8rem;color:var(--muted);font-weight:400;font-family:"DM Sans",sans-serif;margin-top:4px';
+      note.textContent = d.priceNote;
+      document.getElementById('modalPrice').appendChild(note);
+    }
+    document.getElementById('modalTitle').textContent = d.title;
+    document.getElementById('modalLocText').textContent = d.loc;
+
+    // Specs
+    const specsEl = document.getElementById('modalSpecs');
+    specsEl.innerHTML = d.specs.map(s=>`<div class="modal-spec"><div class="modal-spec-lbl">${s.l}</div><div class="modal-spec-val">${s.v}</div></div>`).join('');
+
+    // Features
+    const featsEl = document.getElementById('modalFeatures');
+    featsEl.innerHTML = d.features.map(f=>`<span class="feature-tag">${f}</span>`).join('');
+
+    document.getElementById('modalOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
+    document.getElementById('modalPanel').scrollTop = 0;
   }
 
-  function closeLB() {
-    document.getElementById('lightbox').classList.remove('open');
+  function setModalImg(idx) {
+    const imgs = LISTINGS[modalCurListing].images;
+    modalCurIdx = (idx + imgs.length) % imgs.length;
+    document.getElementById('modalMainImg').src = imgs[modalCurIdx];
+    document.getElementById('modalCounter').textContent = (modalCurIdx+1) + ' / ' + imgs.length;
+    document.querySelectorAll('.modal-thumb').forEach((t,i) => t.classList.toggle('active', i===modalCurIdx));
+    // scroll thumb into view
+    const thumbs = document.getElementById('modalThumbs');
+    const active = thumbs.children[modalCurIdx];
+    if (active) active.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+  }
+
+  function modalImgNav(dir, e) { e.stopPropagation(); setModalImg(modalCurIdx + dir); }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
     document.body.style.overflow = '';
   }
 
-  function lbOutside(e) { if (e.target === document.getElementById('lightbox')) closeLB(); }
-
-  function lbNav(dir) {
-    curIdx = (curIdx + dir + images.length) % images.length;
-    document.getElementById('lbImg').src = images[curIdx];
-  }
+  function modalOutside(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeLB();
-    if (e.key === 'ArrowLeft') lbNav(-1);
-    if (e.key === 'ArrowRight') lbNav(1);
+    if (document.getElementById('modalOverlay').classList.contains('open')) {
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowLeft') setModalImg(modalCurIdx - 1);
+      if (e.key === 'ArrowRight') setModalImg(modalCurIdx + 1);
+    }
   });
 
   // FORMS
