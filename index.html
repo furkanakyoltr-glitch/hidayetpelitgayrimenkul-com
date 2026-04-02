@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hidayet Pelit Gayrimenkul – Mordoğan & İzmir Emlak</title>
+  <meta name="description" content="Hidayet Pelit Gayrimenkul – İzmir Mordoğan bölgesinde satılık villa, yazlık ve konut ilanları. Mülkünüzü satın veya hayalinizdeki evi bulun.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #0d1b2a;
+      --navy-mid: #1b2e42;
+      --gold: #c9a96e;
+      --gold-light: #e8c98a;
+      --white: #ffffff;
+      --off-white: #f8f6f2;
+      --gray: #6b7280;
+      --gray-light: #e5e7eb;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(13,27,42,0.10);
+      --shadow-lg: 0 8px 48px rgba(13,27,42,0.18);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: var(--navy); background: var(--white); line-height: 1.6; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(13,27,42,0.96); backdrop-filter: blur(12px);
+      padding: 0 5%;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 70px; border-bottom: 1px solid rgba(201,169,110,0.2);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo-icon { width: 40px; height: 40px; background: var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .nav-logo-icon svg { width: 22px; height: 22px; fill: var(--navy); }
+    .nav-logo-text { color: var(--white); font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; line-height: 1.2; }
+    .nav-logo-sub { color: var(--gold); font-size: 0.65rem; font-family: 'Inter', sans-serif; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.82); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta { background: var(--gold); color: var(--navy); padding: 9px 22px; border-radius: 6px; font-weight: 600; font-size: 0.875rem; text-decoration: none; transition: background 0.2s; white-space: nowrap; }
+    .nav-cta:hover { background: var(--gold-light); }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .nav-hamburger span { width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: all 0.3s; }
+    .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; background: var(--navy); padding: 24px 5%; flex-direction: column; gap: 16px; z-index: 999; border-bottom: 1px solid rgba(201,169,110,0.2); }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 1rem; font-weight: 500; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .mobile-menu a:last-child { border-bottom: none; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh; position: relative; overflow: hidden;
+      display: flex; align-items: center;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--navy) 0%, #1a3a5c 50%, #0d2235 100%);
+    }
+    .hero-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: url('images/x5_1226615918kab.jpg') center/cover no-repeat;
+      opacity: 0.22;
+    }
+    .hero-content {
+      position: relative; z-index: 2; padding: 120px 5% 80px;
+      max-width: 700px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(201,169,110,0.15); border: 1px solid rgba(201,169,110,0.4);
+      color: var(--gold); padding: 6px 16px; border-radius: 100px;
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero-badge::before { content: '●'; font-size: 0.5rem; }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 700; color: var(--white); line-height: 1.15; margin-bottom: 20px;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero p { color: rgba(255,255,255,0.75); font-size: 1.1rem; max-width: 500px; margin-bottom: 36px; }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--gold); color: var(--navy); padding: 14px 32px;
+      border-radius: 8px; font-weight: 700; font-size: 1rem; text-decoration: none;
+      transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,169,110,0.35); }
+    .btn-outline {
+      background: transparent; color: var(--white); padding: 14px 32px;
+      border-radius: 8px; font-weight: 600; font-size: 1rem; text-decoration: none;
+      border: 2px solid rgba(255,255,255,0.3); transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .hero-stats {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+      background: rgba(13,27,42,0.7); backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(201,169,110,0.15);
+      display: flex; justify-content: center;
+    }
+    .hero-stats-inner { display: flex; width: 100%; max-width: 900px; }
+    .stat-item { flex: 1; padding: 20px; text-align: center; border-right: 1px solid rgba(255,255,255,0.08); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--gold); }
+    .stat-label { color: rgba(255,255,255,0.6); font-size: 0.78rem; letter-spacing: 0.05em; }
+
+    /* ─── SECTIONS ─── */
+    section { padding: 80px 5%; }
+    .section-label { color: var(--gold); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 700; color: var(--navy); margin-bottom: 16px; }
+    .section-title span { color: var(--gold); }
+    .section-desc { color: var(--gray); font-size: 1.05rem; max-width: 540px; }
+
+    /* ─── SERVICES ─── */
+    .services { background: var(--off-white); }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 48px; }
+    .service-card {
+      background: var(--white); border-radius: var(--radius); padding: 36px 28px;
+      box-shadow: var(--shadow); border: 1px solid var(--gray-light); transition: all 0.3s;
+    }
+    .service-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
+    .service-icon {
+      width: 56px; height: 56px; background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+      border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+    }
+    .service-icon svg { width: 26px; height: 26px; fill: var(--gold); }
+    .service-card h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 600; margin-bottom: 10px; color: var(--navy); }
+    .service-card p { color: var(--gray); font-size: 0.9rem; line-height: 1.65; }
+    .service-link { color: var(--gold); text-decoration: none; font-weight: 600; font-size: 0.875rem; display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; transition: gap 0.2s; }
+    .service-link:hover { gap: 10px; }
+
+    /* ─── LISTINGS ─── */
+    .listing-header { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 48px; }
+    .listing-card {
+      background: var(--white); border-radius: 16px; overflow: hidden;
+      box-shadow: var(--shadow); border: 1px solid var(--gray-light); transition: all 0.3s;
+      max-width: 860px; margin: 0 auto;
+    }
+    .listing-card:hover { box-shadow: var(--shadow-lg); }
+    .gallery-main { position: relative; height: 420px; overflow: hidden; cursor: pointer; }
+    .gallery-main img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+    .gallery-main:hover img { transform: scale(1.04); }
+    .gallery-badge { position: absolute; top: 16px; left: 16px; background: var(--gold); color: var(--navy); padding: 6px 14px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.05em; }
+    .gallery-badge-sale { position: absolute; top: 16px; right: 16px; background: rgba(13,27,42,0.85); color: var(--white); padding: 6px 14px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; backdrop-filter: blur(6px); }
+    .gallery-thumbs { display: flex; gap: 8px; padding: 12px; background: var(--navy); overflow-x: auto; }
+    .gallery-thumbs::-webkit-scrollbar { height: 4px; }
+    .gallery-thumbs::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+    .thumb-img { width: 80px; height: 60px; object-fit: cover; border-radius: 6px; cursor: pointer; opacity: 0.65; transition: opacity 0.2s; flex-shrink: 0; border: 2px solid transparent; }
+    .thumb-img.active, .thumb-img:hover { opacity: 1; border-color: var(--gold); }
+    .listing-body { padding: 32px; }
+    .listing-price { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+    .listing-title { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+    .listing-location { display: flex; align-items: center; gap: 6px; color: var(--gray); font-size: 0.9rem; margin-bottom: 24px; }
+    .listing-location svg { width: 16px; height: 16px; fill: var(--gold); }
+    .listing-specs { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 28px; }
+    .spec-item { background: var(--off-white); border-radius: 8px; padding: 12px 14px; }
+    .spec-label { font-size: 0.72rem; color: var(--gray); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .spec-value { font-size: 0.95rem; font-weight: 600; color: var(--navy); }
+    .listing-features { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .feature-tag { background: rgba(201,169,110,0.1); border: 1px solid rgba(201,169,110,0.3); color: var(--navy); padding: 5px 14px; border-radius: 100px; font-size: 0.82rem; font-weight: 500; }
+    .listing-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    /* ─── MAP ─── */
+    .map-section { background: var(--navy); padding: 80px 5%; }
+    .map-section .section-title { color: var(--white); }
+    .map-section .section-desc { color: rgba(255,255,255,0.6); }
+    .map-wrapper { margin-top: 40px; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid rgba(201,169,110,0.2); }
+    #map { height: 420px; width: 100%; }
+    .map-info-bar { background: rgba(255,255,255,0.06); border-top: 1px solid rgba(255,255,255,0.08); padding: 20px 28px; display: flex; gap: 32px; flex-wrap: wrap; }
+    .map-info-item { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+    .map-info-item svg { width: 18px; height: 18px; fill: var(--gold); flex-shrink: 0; }
+
+    /* ─── SELL FORM ─── */
+    .sell-section { background: var(--off-white); }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .form-card { background: var(--white); border-radius: 16px; padding: 40px; box-shadow: var(--shadow); border: 1px solid var(--gray-light); }
+    .form-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .form-subtitle { color: var(--gray); font-size: 0.9rem; margin-bottom: 28px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; letter-spacing: 0.02em; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--gray-light);
+      border-radius: 8px; font-size: 0.9rem; font-family: 'Inter', sans-serif;
+      color: var(--navy); background: var(--white); transition: border-color 0.2s;
+      outline: none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .btn-form {
+      width: 100%; background: var(--navy); color: var(--white);
+      padding: 14px; border: none; border-radius: 8px; font-size: 1rem;
+      font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
+    }
+    .btn-form:hover { background: var(--gold); color: var(--navy); }
+    .form-note { color: var(--gray); font-size: 0.78rem; text-align: center; margin-top: 12px; }
+    .side-content { padding-top: 8px; }
+    .side-content .section-desc { margin-bottom: 32px; }
+    .benefit-list { display: flex; flex-direction: column; gap: 16px; }
+    .benefit-item { display: flex; align-items: flex-start; gap: 14px; }
+    .benefit-icon { width: 40px; height: 40px; background: rgba(201,169,110,0.12); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .benefit-icon svg { width: 20px; height: 20px; fill: var(--gold); }
+    .benefit-text h4 { font-weight: 600; font-size: 0.95rem; margin-bottom: 2px; }
+    .benefit-text p { color: var(--gray); font-size: 0.85rem; }
+
+    /* ─── BUY SECTION ─── */
+    .buy-section { background: var(--white); }
+    .buy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .search-form { background: var(--navy); border-radius: 16px; padding: 40px; }
+    .search-form .form-title { color: var(--white); }
+    .search-form .form-subtitle { color: rgba(255,255,255,0.6); }
+    .search-form label { color: rgba(255,255,255,0.8) !important; }
+    .search-form input, .search-form select {
+      background: rgba(255,255,255,0.08) !important;
+      border-color: rgba(255,255,255,0.15) !important;
+      color: var(--white) !important;
+    }
+    .search-form input::placeholder { color: rgba(255,255,255,0.4); }
+    .search-form input:focus, .search-form select:focus { border-color: var(--gold) !important; }
+    .search-form select option { background: var(--navy); color: var(--white); }
+    .search-form .btn-form { background: var(--gold); color: var(--navy); }
+    .search-form .btn-form:hover { background: var(--gold-light); }
+    .buy-side { }
+    .upcoming-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: var(--navy); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .upcoming-title::after { content: ''; flex: 1; height: 1px; background: var(--gray-light); }
+    .upcoming-card { display: flex; gap: 16px; padding: 16px; border-radius: 10px; border: 1px solid var(--gray-light); margin-bottom: 14px; transition: all 0.2s; cursor: pointer; }
+    .upcoming-card:hover { border-color: var(--gold); background: rgba(201,169,110,0.04); }
+    .upcoming-img { width: 80px; height: 68px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+    .upcoming-info { flex: 1; }
+    .upcoming-info h4 { font-weight: 600; font-size: 0.9rem; color: var(--navy); margin-bottom: 3px; line-height: 1.3; }
+    .upcoming-info p { color: var(--gray); font-size: 0.8rem; margin-bottom: 6px; }
+    .upcoming-price { color: var(--gold); font-weight: 700; font-size: 0.95rem; }
+    .upcoming-badge { background: #f0fdf4; color: #16a34a; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600; }
+
+    /* ─── ABOUT ─── */
+    .about-section { background: var(--off-white); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .about-img-wrap { position: relative; border-radius: 16px; overflow: hidden; height: 420px; }
+    .about-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .about-img-badge {
+      position: absolute; bottom: 24px; right: 24px;
+      background: var(--gold); color: var(--navy); border-radius: 12px;
+      padding: 16px 20px; text-align: center; box-shadow: var(--shadow);
+    }
+    .about-img-badge .num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; line-height: 1; }
+    .about-img-badge .lbl { font-size: 0.72rem; font-weight: 600; margin-top: 2px; }
+    .about-text .section-title { margin-bottom: 20px; }
+    .about-text p { color: var(--gray); margin-bottom: 16px; font-size: 0.95rem; }
+    .about-contact { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
+    .contact-row { display: flex; align-items: center; gap: 12px; }
+    .contact-row svg { width: 20px; height: 20px; fill: var(--gold); flex-shrink: 0; }
+    .contact-row span { font-size: 0.95rem; color: var(--navy); font-weight: 500; }
+    .contact-row a { color: var(--navy); text-decoration: none; }
+    .contact-row a:hover { color: var(--gold); }
+
+    /* ─── FOOTER ─── */
+    footer { background: var(--navy); color: rgba(255,255,255,0.65); padding: 60px 5% 30px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+    .footer-brand .nav-logo-text { font-size: 1.15rem; }
+    .footer-brand p { color: rgba(255,255,255,0.5); font-size: 0.87rem; margin-top: 14px; line-height: 1.7; }
+    .footer-col h4 { color: var(--gold); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; gap: 12px; }
+    .footer-bottom p { font-size: 0.82rem; }
+
+    /* ─── LIGHTBOX ─── */
+    .lightbox { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.93); align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox-img { max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: 8px; }
+    .lightbox-close { position: absolute; top: 20px; right: 24px; color: var(--white); font-size: 2rem; cursor: pointer; background: none; border: none; line-height: 1; opacity: 0.7; transition: opacity 0.2s; }
+    .lightbox-close:hover { opacity: 1; }
+    .lightbox-prev, .lightbox-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: none; color: var(--white); font-size: 1.8rem; padding: 12px 16px; cursor: pointer; border-radius: 8px; transition: background 0.2s; }
+    .lightbox-prev:hover, .lightbox-next:hover { background: rgba(201,169,110,0.4); }
+    .lightbox-prev { left: 16px; }
+    .lightbox-next { right: 16px; }
+
+    /* ─── TOAST ─── */
+    .toast { position: fixed; bottom: 32px; right: 32px; background: var(--navy); color: var(--white); padding: 14px 22px; border-radius: 10px; border-left: 4px solid var(--gold); box-shadow: var(--shadow-lg); font-size: 0.9rem; font-weight: 500; z-index: 9000; transform: translateY(80px); opacity: 0; transition: all 0.35s cubic-bezier(.22,.68,0,1.4); }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .two-col, .buy-grid, .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .hero-stats-inner { flex-wrap: wrap; }
+      .stat-item { min-width: 50%; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 60px 5%; }
+      .gallery-main { height: 260px; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .listing-specs { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </div>
+    <div>
+      <div class="nav-logo-text">Hidayet Pelit</div>
+      <div class="nav-logo-sub">Gayrimenkul</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#ilanlar">İlanlar</a></li>
+    <li><a href="#konum">Konum</a></li>
+    <li><a href="#sat">Mülkünüzü Satın</a></li>
+    <li><a href="#al">Ev Arıyorum</a></li>
+    <li><a href="#hakkimizda">Hakkımızda</a></li>
+  </ul>
+  <a href="tel:+905XXXXXXXXX" class="nav-cta">İletişim</a>
+  <div class="nav-hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#ilanlar" onclick="toggleMenu()">İlanlar</a>
+  <a href="#konum" onclick="toggleMenu()">Konum</a>
+  <a href="#sat" onclick="toggleMenu()">Mülkünüzü Satın</a>
+  <a href="#al" onclick="toggleMenu()">Ev Arıyorum</a>
+  <a href="#hakkimizda" onclick="toggleMenu()">Hakkımızda</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">İzmir · Mordoğan · Güvenilir Emlak</div>
+    <h1>Hayalinizdeki<br><span>Evi Buluyoruz</span></h1>
+    <p>Mordoğan'ın eşsiz deniz manzarasından şehrin kalbine, her ihtiyaca uygun konut ve yatırım fırsatları.</p>
+    <div class="hero-actions">
+      <a href="#ilanlar" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        İlanları Gör
+      </a>
+      <a href="#sat" class="btn-outline">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+        Mülkünüzü Satın
+      </a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stats-inner">
+      <div class="stat-item">
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Yıllık Tecrübe</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">200+</div>
+        <div class="stat-label">Satılan Mülk</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">%98</div>
+        <div class="stat-label">Müşteri Memnuniyeti</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Aktif Bölge</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="section-label">Hizmetlerimiz</div>
+  <div class="section-title">Size Nasıl <span>Yardımcı Olabiliriz?</span></div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.07-.44.18-.86.18-1a3 3 0 0 0-6 0c0 .14.11.56.18 1H10c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-1a1 1 0 0 1 2 0c0 .14-.11.56-.18 1h-1.64C13.11 5.56 13 5.14 13 5zm7 15H10V8h3.18l.82 2h2l.82-2H20v12z"/></svg>
+      </div>
+      <h3>Mülk Satışı</h3>
+      <p>Mülkünüzün gerçek piyasa değerini belirliyor, en kısa sürede en iyi alıcıyla buluşturuyoruz.</p>
+      <a href="#sat" class="service-link">Ücretsiz Değerleme →</a>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      </div>
+      <h3>Konut Alımı</h3>
+      <p>Bütçenize ve beklentilerinize en uygun mülkleri bulup, süreç boyunca yanınızda oluyoruz.</p>
+      <a href="#al" class="service-link">Ev Ara →</a>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      </div>
+      <h3>Bölge Uzmanlığı</h3>
+      <p>Mordoğan, Urla ve İzmir bölgelerinde derin yerel bilgi ile yatırım değeri yüksek lokasyonları belirliyoruz.</p>
+      <a href="#konum" class="service-link">Haritada Gör →</a>
+    </div>
+  </div>
+</section>
+
+<!-- LISTINGS -->
+<section id="ilanlar" style="background: var(--white); padding: 80px 5%;">
+  <div class="listing-header">
+    <div>
+      <div class="section-label">Güncel İlanlar</div>
+      <div class="section-title">Öne Çıkan <span>Mülkler</span></div>
+    </div>
+  </div>
+
+  <!-- LISTING 1 -->
+  <div class="listing-card">
+    <div class="gallery-main" onclick="openLightbox(0)">
+      <img id="mainImg" src="images/x5_1226615918kab.jpg" alt="Mordoğan Villa">
+      <div class="gallery-badge">SATILIK</div>
+      <div class="gallery-badge-sale">Sahibinden</div>
+    </div>
+    <div class="gallery-thumbs">
+      <img class="thumb-img active" src="images/x5_1226615918kab.jpg" onclick="changeMain(this,'images/x5_1226615918kab.jpg',0)" alt="">
+      <img class="thumb-img" src="images/x5_1226615918c67.jpg" onclick="changeMain(this,'images/x5_1226615918c67.jpg',1)" alt="">
+      <img class="thumb-img" src="images/x5_1226615918mrc.jpg" onclick="changeMain(this,'images/x5_1226615918mrc.jpg',2)" alt="">
+      <img class="thumb-img" src="images/x5_1226615918n23.jpg" onclick="changeMain(this,'images/x5_1226615918n23.jpg',3)" alt="">
+      <img class="thumb-img" src="images/x5_1226615918fvd.jpg" onclick="changeMain(this,'images/x5_1226615918fvd.jpg',4)" alt="">
+      <img class="thumb-img" src="images/x5_1226615918gz9.jpg" onclick="changeMain(this,'images/x5_1226615918gz9.jpg',5)" alt="">
+      <img class="thumb-img" src="images/x5_1226615918dx7.jpg" onclick="changeMain(this,'images/x5_1226615918dx7.jpg',6)" alt="">
+      <img class="thumb-img" src="images/x5_1226615918e03.jpg" onclick="changeMain(this,'images/x5_1226615918e03.jpg',7)" alt="">
+      <img class="thumb-img" src="images/x5_1226615918b77.jpg" onclick="changeMain(this,'images/x5_1226615918b77.jpg',8)" alt="">
+      <img class="thumb-img" src="images/x5_1226615918xv8.jpg" onclick="changeMain(this,'images/x5_1226615918xv8.jpg',9)" alt="">
+    </div>
+    <div class="listing-body">
+      <div class="listing-price">14.250.000 TL</div>
+      <div class="listing-title">Mordoğan AR-KO Sitesi – Deniz Manzaralı Sıfır Villa</div>
+      <div class="listing-location">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        Mordoğan, Urla / İzmir
+      </div>
+      <div class="listing-specs">
+        <div class="spec-item"><div class="spec-label">Oda Sayısı</div><div class="spec-value">4+1</div></div>
+        <div class="spec-item"><div class="spec-label">Bina Yaşı</div><div class="spec-value">0 (Sıfır)</div></div>
+        <div class="spec-item"><div class="spec-label">Kat Sayısı</div><div class="spec-value">3</div></div>
+        <div class="spec-item"><div class="spec-label">Banyo</div><div class="spec-value">2</div></div>
+        <div class="spec-item"><div class="spec-label">Isıtma</div><div class="spec-value">Kat Kaloriferi</div></div>
+        <div class="spec-item"><div class="spec-label">Site</div><div class="spec-value">AR-KO Sitesi</div></div>
+        <div class="spec-item"><div class="spec-label">Aidat</div><div class="spec-value">1.500 TL</div></div>
+        <div class="spec-item"><div class="spec-label">Tapu</div><div class="spec-value">Müstakil Tapulu</div></div>
+      </div>
+      <div class="listing-features">
+        <span class="feature-tag">Deniz Manzarası</span>
+        <span class="feature-tag">Balkon</span>
+        <span class="feature-tag">Amerikan Mutfak</span>
+        <span class="feature-tag">Müstakil</span>
+        <span class="feature-tag">Krediye Uygun</span>
+        <span class="feature-tag">Takasa Uygun</span>
+        <span class="feature-tag">Boş</span>
+        <span class="feature-tag">Site İçi</span>
+      </div>
+      <div class="listing-actions">
+        <a href="#al" class="btn-primary" style="font-size:0.9rem; padding:12px 24px;">Bu Mülk İçin Bilgi Al</a>
+        <a href="tel:+905XXXXXXXXX" class="btn-outline" style="font-size:0.9rem; padding:12px 24px; color:var(--navy); border-color:var(--gray-light);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          Ara
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section class="map-section" id="konum">
+  <div class="section-label" style="color:var(--gold)">Konum</div>
+  <div class="section-title">Mordoğan'da <span>Nerede?</span></div>
+  <div class="section-desc">AR-KO Sitesi, Mordoğan'ın denize sıfır konumunda yer almakta. Çarşı ve plajlara yürüme mesafesi.</div>
+  <div class="map-wrapper">
+    <div id="map"></div>
+    <div class="map-info-bar">
+      <div class="map-info-item">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+        <span>Mordoğan, Urla, İzmir</span>
+      </div>
+      <div class="map-info-item">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+        <span>İzmir Merkezi'ne ~60 dk</span>
+      </div>
+      <div class="map-info-item">
+        <svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+        <span>Urla İlçesi, Ege Bölgesi</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SELL SECTION -->
+<section class="sell-section" id="sat">
+  <div class="two-col">
+    <div class="side-content">
+      <div class="section-label">Mülk Sahipleri İçin</div>
+      <div class="section-title">Mülkünüzü <span>Bize Emanet Edin</span></div>
+      <div class="section-desc">Portföyünüzü bize teslim edin, doğru alıcıyla en hızlı şekilde buluşturalım.</div>
+      <div class="benefit-list" style="margin-top:28px">
+        <div class="benefit-item">
+          <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+          <div class="benefit-text"><h4>Ücretsiz Değerleme</h4><p>Piyasa koşullarına göre doğru fiyat belirleme.</p></div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
+          <div class="benefit-text"><h4>Geniş Alıcı Ağı</h4><p>Binlerce potansiyel alıcıya doğrudan ulaşım.</p></div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+          <div class="benefit-text"><h4>Güvenli Süreç</h4><p>Tapu devrine kadar tüm hukuki süreç yönetimi.</p></div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg></div>
+          <div class="benefit-text"><h4>Hızlı Satış</h4><p>Ortalama satış süremiz rakiplerimizin yarısı.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="form-card">
+      <div class="form-title">Portfolyo Teslim Formu</div>
+      <div class="form-subtitle">Mülkünüzün bilgilerini bırakın, sizi arayalım.</div>
+      <form onsubmit="submitForm(event,'sell')">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Ad Soyad *</label>
+            <input type="text" placeholder="Ad Soyad" required>
+          </div>
+          <div class="form-group">
+            <label>Telefon *</label>
+            <input type="tel" placeholder="05XX XXX XX XX" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Mülk Tipi</label>
+          <select>
+            <option>Villa / Müstakil Ev</option>
+            <option>Daire</option>
+            <option>Yazlık</option>
+            <option>Arsa</option>
+            <option>Ticari</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Konum</label>
+            <input type="text" placeholder="İlçe / Semt">
+          </div>
+          <div class="form-group">
+            <label>Tahmini Fiyat (TL)</label>
+            <input type="text" placeholder="Ör: 5.000.000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Ek Bilgi</label>
+          <textarea placeholder="Mülk hakkında eklemek istediğiniz bilgiler..."></textarea>
+        </div>
+        <button type="submit" class="btn-form">Portfolyoma Ekleyin</button>
+        <p class="form-note">Bilgileriniz üçüncü taraflarla paylaşılmaz.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- BUY SECTION -->
+<section class="buy-section" id="al">
+  <div class="buy-grid">
+    <div class="search-form">
+      <div class="form-title">Ev Arıyorum</div>
+      <div class="form-subtitle">Beklentilerinizi bırakın, size özel seçenekler sunalım.</div>
+      <form onsubmit="submitForm(event,'buy')">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Ad Soyad *</label>
+            <input type="text" placeholder="Ad Soyad" required>
+          </div>
+          <div class="form-group">
+            <label>Telefon *</label>
+            <input type="tel" placeholder="05XX XXX XX XX" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Konut Tipi</label>
+            <select>
+              <option>Villa / Müstakil</option>
+              <option>Daire</option>
+              <option>Yazlık</option>
+              <option>Arsa</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Oda Sayısı</label>
+            <select>
+              <option>Fark Etmez</option>
+              <option>1+1</option>
+              <option>2+1</option>
+              <option>3+1</option>
+              <option>4+1</option>
+              <option>5+1 ve üzeri</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Min. Bütçe (TL)</label>
+            <input type="text" placeholder="Ör: 3.000.000">
+          </div>
+          <div class="form-group">
+            <label>Max. Bütçe (TL)</label>
+            <input type="text" placeholder="Ör: 20.000.000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Tercih Ettiğiniz Bölge</label>
+          <input type="text" placeholder="Mordoğan, Urla, Çeşme...">
+        </div>
+        <div class="form-group">
+          <label>Özel İstekler</label>
+          <textarea placeholder="Deniz manzarası, site içi, yüzme havuzu..." style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);color:#fff;"></textarea>
+        </div>
+        <button type="submit" class="btn-form">Beni Arayın</button>
+      </form>
+    </div>
+    <div class="buy-side">
+      <div>
+        <div class="section-label">Neden Biz?</div>
+        <div class="section-title">Doğru <span>Evinizi Bulmak</span><br>Artık Kolay</div>
+        <div class="section-desc" style="margin-bottom:32px">Yılların tecrübesiyle Mordoğan ve İzmir bölgesinde yüzlerce başarılı satış gerçekleştirdik. Her adımda yanınızdayız.</div>
+      </div>
+      <div class="upcoming-title">Güncel İlanlar</div>
+      <div class="upcoming-card" onclick="document.getElementById('ilanlar').scrollIntoView({behavior:'smooth'})">
+        <img class="upcoming-img" src="images/x5_1226615918kab.jpg" alt="Villa">
+        <div class="upcoming-info">
+          <h4>Mordoğan AR-KO Sitesi Sıfır Villa</h4>
+          <p>Mordoğan, Urla · 4+1 · 3 Kat</p>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="upcoming-price">14.250.000 TL</span>
+            <span class="upcoming-badge">Sıfır</span>
+          </div>
+        </div>
+      </div>
+      <div class="upcoming-card" style="opacity:0.55;cursor:default">
+        <div style="width:80px;height:68px;background:var(--gray-light);border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#9ca3af"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        </div>
+        <div class="upcoming-info">
+          <h4>Yeni İlan Yakında</h4>
+          <p>Eklenmek üzere</p>
+          <span style="color:var(--gray);font-size:0.82rem;">Portföy güncelleniyor...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="hakkimizda">
+  <div class="about-grid">
+    <div class="about-img-wrap">
+      <img src="images/x5_1226615918c67.jpg" alt="Hidayet Pelit Gayrimenkul">
+      <div class="about-img-badge">
+        <div class="num">15+</div>
+        <div class="lbl">YIL TECRÜBE</div>
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="section-label">Hakkımızda</div>
+      <div class="section-title">Hidayet Pelit <span>Gayrimenkul</span></div>
+      <p>Mordoğan ve İzmir'in eşsiz coğrafyasında 15 yılı aşkın tecrübesiyle faaliyet göstermekteyiz. Her müşterimizin beklentilerini anlayarak en uygun çözümleri sunmak temel prensibimizdir.</p>
+      <p>Mülk satışından alımına, portföy yönetiminden yatırım danışmanlığına kadar kapsamlı gayrimenkul hizmetleri sunuyoruz. Güvenilirlik ve şeffaflık her adımımızda rehberimizdir.</p>
+      <p>Deniz manzaralı villalar, müstakil evler ve yazlıklardan oluşan geniş portföyümüzle hayalinizdeki yaşam alanını bulmanıza yardım ediyoruz.</p>
+      <div class="about-contact">
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          <span><a href="tel:+905XXXXXXXXX">+90 5XX XXX XX XX</a></span>
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          <span><a href="mailto:info@hidayetpelitgayrimenkul.com">info@hidayetpelitgayrimenkul.com</a></span>
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          <span>Mordoğan, Urla / İzmir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="text-decoration:none;">
+        <div class="nav-logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        </div>
+        <div>
+          <div class="nav-logo-text">Hidayet Pelit</div>
+          <div class="nav-logo-sub">Gayrimenkul</div>
+        </div>
+      </a>
+      <p>Mordoğan ve İzmir'de güvenilir gayrimenkul çözümleri. 15 yılı aşkın tecrübe ile yanınızdayız.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Hızlı Erişim</h4>
+      <ul>
+        <li><a href="#ilanlar">İlanlar</a></li>
+        <li><a href="#konum">Konum</a></li>
+        <li><a href="#sat">Mülkünüzü Satın</a></li>
+        <li><a href="#al">Ev Arıyorum</a></li>
+        <li><a href="#hakkimizda">Hakkımızda</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>İletişim</h4>
+      <ul>
+        <li><a href="tel:+905XXXXXXXXX">+90 5XX XXX XX XX</a></li>
+        <li><a href="mailto:info@hidayetpelitgayrimenkul.com">E-posta Gönder</a></li>
+        <li><a href="#konum">Mordoğan, Urla, İzmir</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Hidayet Pelit Gayrimenkul. Tüm hakları saklıdır.</p>
+    <p style="font-size:0.75rem;color:rgba(255,255,255,0.3)">hidayetpelitgayrimenkul.com</p>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button class="lightbox-prev" onclick="lightboxNav(-1)">‹</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="">
+  <button class="lightbox-next" onclick="lightboxNav(1)">›</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WPaA=" crossorigin=""></script>
+<script>
+  // MAP
+  const map = L.map('map', { scrollWheelZoom: false }).setView([38.5394, 26.7444], 14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 19
+  }).addTo(map);
+
+  const icon = L.divIcon({
+    className: '',
+    html: `<div style="background:#c9a96e;width:40px;height:40px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid #0d1b2a;box-shadow:0 4px 12px rgba(0,0,0,0.35)"><div style="width:10px;height:10px;background:#fff;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)"></div></div>`,
+    iconSize: [40, 40], iconAnchor: [20, 40], popupAnchor: [0, -44]
+  });
+  L.marker([38.5394, 26.7444], { icon })
+    .addTo(map)
+    .bindPopup('<b style="color:#0d1b2a">AR-KO Sitesi</b><br><small>Mordoğan – Deniz Manzaralı Sıfır Villa<br>14.250.000 TL</small>')
+    .openPopup();
+
+  // GALLERY
+  const images = [
+    'images/x5_1226615918kab.jpg','images/x5_1226615918c67.jpg',
+    'images/x5_1226615918mrc.jpg','images/x5_1226615918n23.jpg',
+    'images/x5_1226615918fvd.jpg','images/x5_1226615918gz9.jpg',
+    'images/x5_1226615918dx7.jpg','images/x5_1226615918e03.jpg',
+    'images/x5_1226615918b77.jpg','images/x5_1226615918xv8.jpg'
+  ];
+  let currentImg = 0;
+
+  function changeMain(el, src, idx) {
+    document.getElementById('mainImg').src = src;
+    document.querySelectorAll('.thumb-img').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    currentImg = idx;
+  }
+
+  function openLightbox(idx) {
+    currentImg = idx;
+    document.getElementById('lightboxImg').src = images[currentImg];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeLightboxOutside(e) {
+    if (e.target === document.getElementById('lightbox')) closeLightbox();
+  }
+
+  function lightboxNav(dir) {
+    currentImg = (currentImg + dir + images.length) % images.length;
+    document.getElementById('lightboxImg').src = images[currentImg];
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') lightboxNav(-1);
+    if (e.key === 'ArrowRight') lightboxNav(1);
+  });
+
+  // FORMS
+  function submitForm(e, type) {
+    e.preventDefault();
+    const msg = type === 'sell' ? 'Formunuz alındı! En kısa sürede sizi arayacağız.' : 'Talebiniz iletildi! Sizi arayacağız.';
+    showToast(msg);
+    e.target.reset();
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3800);
+  }
+
+  // MOBILE MENU
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+</script>
+</body>
+</html>
