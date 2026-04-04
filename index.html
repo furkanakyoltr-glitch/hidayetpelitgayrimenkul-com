@@ -11,18 +11,18 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --dark:       #0e0e0e;
-      --dark-mid:   #1a1a1a;
-      --dark-soft:  #242424;
-      --champagne:  #c4a46b;
-      --champ-lt:   #d4b882;
-      --champ-dim:  rgba(196,164,107,0.15);
+      --dark:       #1a4228;
+      --dark-mid:   #1e4d2f;
+      --dark-soft:  #245934;
+      --yellow:     #e8c800;
+      --yellow-lt:  #f0d420;
+      --yellow-dim: rgba(232,200,0,0.13);
       --white:      #ffffff;
-      --cream:      #faf7f2;
-      --cream-mid:  #f2ede4;
-      --muted:      #7a7166;
-      --line:       rgba(255,255,255,0.08);
-      --line-dark:  rgba(0,0,0,0.08);
+      --cream:      #f5f7f2;
+      --cream-mid:  #edf0e8;
+      --muted:      #5a6b5a;
+      --line:       rgba(255,255,255,0.10);
+      --line-dark:  rgba(0,0,0,0.09);
       --radius:     4px;
       --shadow:     0 4px 32px rgba(0,0,0,0.10);
       --shadow-lg:  0 12px 64px rgba(0,0,0,0.18);
@@ -32,7 +32,7 @@
 
     /* ───────── SCROLLBAR ───────── */
     ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-thumb { background: var(--champagne); }
+    ::-webkit-scrollbar-thumb { background: var(--yellow); }
 
     /* ───────── NAV ───────── */
     nav {
@@ -44,44 +44,42 @@
       border-bottom: 1px solid transparent;
     }
     nav.scrolled {
-      background: rgba(14,14,14,0.97);
+      background: rgba(26,66,40,0.97);
       border-bottom-color: var(--line);
       backdrop-filter: blur(20px);
     }
     .nav-logo { display: flex; align-items: center; gap: 14px; text-decoration: none; }
-    .nav-logo-mark {
-      width: 38px; height: 38px;
-      border: 1.5px solid var(--champagne);
-      display: flex; align-items: center; justify-content: center;
+    .nav-logo img {
+      height: 44px; width: auto; object-fit: contain;
+      border-radius: 4px;
     }
-    .nav-logo-mark svg { width: 18px; height: 18px; fill: var(--champagne); }
     .nav-logo-text {
       color: var(--white);
       font-family: 'Bodoni Moda', serif;
       font-size: 1.15rem; font-weight: 500; letter-spacing: 0.04em; line-height: 1.2;
     }
     .nav-logo-sub {
-      color: var(--champagne); font-size: 0.6rem; font-family: 'DM Sans', sans-serif;
+      color: var(--yellow); font-size: 0.6rem; font-family: 'DM Sans', sans-serif;
       font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase;
     }
     .nav-links { display: flex; gap: 32px; list-style: none; }
     .nav-links a {
-      color: rgba(255,255,255,0.7); text-decoration: none;
+      color: rgba(255,255,255,0.75); text-decoration: none;
       font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
       transition: color 0.2s; position: relative; padding-bottom: 2px;
     }
     .nav-links a::after {
       content: ''; position: absolute; left: 0; bottom: -2px; width: 0; height: 1px;
-      background: var(--champagne); transition: width 0.3s;
+      background: var(--yellow); transition: width 0.3s;
     }
     .nav-links a:hover { color: var(--white); }
     .nav-links a:hover::after { width: 100%; }
     .nav-cta {
-      color: var(--champagne); border: 1px solid var(--champagne); padding: 9px 24px;
+      color: var(--yellow); border: 1px solid var(--yellow); padding: 9px 24px;
       font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
       text-decoration: none; transition: all 0.25s;
     }
-    .nav-cta:hover { background: var(--champagne); color: var(--dark); }
+    .nav-cta:hover { background: var(--yellow); color: var(--dark); }
     .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
     .nav-hamburger span { width: 24px; height: 1.5px; background: var(--white); transition: all 0.3s; }
     .mobile-menu {
@@ -91,7 +89,7 @@
     }
     .mobile-menu.open { display: flex; }
     .mobile-menu a {
-      color: rgba(255,255,255,0.75); text-decoration: none;
+      color: rgba(255,255,255,0.80); text-decoration: none;
       font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
       padding: 14px 0; border-bottom: 1px solid var(--line);
     }
@@ -103,11 +101,11 @@
     }
     .hero-img {
       position: absolute; inset: 0;
-      background: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=85&auto=format&fit=crop') center/cover no-repeat;
+      background: url('images/v_1.jpg') center/cover no-repeat;
     }
     .hero-img::after {
       content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.45) 45%, rgba(10,10,10,0.15) 100%);
+      background: linear-gradient(to top, rgba(26,66,40,0.88) 0%, rgba(26,66,40,0.30) 45%, rgba(26,66,40,0.08) 100%);
     }
     .hero-content {
       position: relative; z-index: 2;
@@ -117,47 +115,47 @@
     .hero-left { }
     .hero-eyebrow {
       display: flex; align-items: center; gap: 12px;
-      color: var(--champagne); font-size: 0.7rem; font-weight: 500;
+      color: var(--yellow); font-size: 0.7rem; font-weight: 500;
       letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 20px;
     }
-    .hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--champagne); }
+    .hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--yellow); }
     .hero h1 {
       font-family: 'Bodoni Moda', serif;
       font-size: clamp(2.8rem, 5.5vw, 5rem);
       font-weight: 300; color: var(--white); line-height: 1.1;
       margin-bottom: 28px; letter-spacing: -0.01em;
     }
-    .hero h1 em { font-style: italic; color: var(--champagne); }
-    .hero-desc { color: rgba(255,255,255,0.6); font-size: 0.95rem; max-width: 420px; margin-bottom: 40px; font-weight: 300; }
+    .hero h1 em { font-style: italic; color: var(--yellow); }
+    .hero-desc { color: rgba(255,255,255,0.7); font-size: 0.95rem; max-width: 420px; margin-bottom: 40px; font-weight: 300; }
     .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
     .btn-primary {
-      background: var(--champagne); color: var(--dark);
-      padding: 14px 36px; font-size: 0.78rem; font-weight: 600;
+      background: var(--yellow); color: var(--dark);
+      padding: 14px 36px; font-size: 0.78rem; font-weight: 700;
       letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
       transition: all 0.25s; display: inline-flex; align-items: center; gap: 10px;
     }
-    .btn-primary:hover { background: var(--champ-lt); transform: translateY(-2px); }
+    .btn-primary:hover { background: var(--yellow-lt); transform: translateY(-2px); }
     .btn-ghost {
-      background: transparent; color: rgba(255,255,255,0.8);
+      background: transparent; color: rgba(255,255,255,0.85);
       padding: 13px 36px; font-size: 0.78rem; font-weight: 500;
       letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
-      border: 1px solid rgba(255,255,255,0.25); transition: all 0.25s;
+      border: 1px solid rgba(255,255,255,0.30); transition: all 0.25s;
       display: inline-flex; align-items: center; gap: 10px;
     }
-    .btn-ghost:hover { border-color: var(--champagne); color: var(--champagne); }
+    .btn-ghost:hover { border-color: var(--yellow); color: var(--yellow); }
     .hero-right { }
     .hero-stats { display: flex; flex-direction: column; gap: 0; align-items: flex-end; }
     .hero-stat-row { display: flex; align-items: baseline; gap: 10px; padding: 16px 0; border-top: 1px solid var(--line); width: 100%; justify-content: flex-end; }
     .hero-stat-row:last-child { border-bottom: 1px solid var(--line); }
     .stat-num {
       font-family: 'Bodoni Moda', serif; font-size: 2.2rem;
-      font-weight: 400; color: var(--champagne); line-height: 1;
+      font-weight: 400; color: var(--yellow); line-height: 1;
     }
-    .stat-label { color: rgba(255,255,255,0.5); font-size: 0.75rem; font-weight: 400; letter-spacing: 0.08em; }
+    .stat-label { color: rgba(255,255,255,0.55); font-size: 0.75rem; font-weight: 400; letter-spacing: 0.08em; }
 
     /* ───────── DIVIDER ───────── */
     .divider {
-      height: 1px; background: linear-gradient(to right, transparent, var(--champagne), transparent);
+      height: 1px; background: linear-gradient(to right, transparent, var(--yellow), transparent);
       margin: 0; opacity: 0.3;
     }
 
@@ -165,51 +163,58 @@
     section { padding: 100px 6%; }
     .sec-eyebrow {
       display: flex; align-items: center; gap: 12px;
-      color: var(--champagne); font-size: 0.68rem; font-weight: 600;
+      color: var(--dark); font-size: 0.68rem; font-weight: 600;
       letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 16px;
     }
-    .sec-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--champagne); }
+    .sec-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--dark); }
+    .sec-eyebrow.light { color: var(--yellow); }
+    .sec-eyebrow.light::before { background: var(--yellow); }
     .sec-title {
       font-family: 'Bodoni Moda', serif;
       font-size: clamp(2rem, 3.5vw, 3rem);
       font-weight: 400; letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 20px;
     }
-    .sec-title em { font-style: italic; color: var(--champagne); }
+    .sec-title em { font-style: italic; color: var(--dark); }
+    .sec-title.light-title em { color: var(--yellow); }
     .sec-desc { color: var(--muted); font-size: 0.95rem; font-weight: 300; max-width: 520px; line-height: 1.8; }
 
-    /* ───────── SERVICES ───────── */
-    .services { background: var(--dark); }
-    .services .sec-title { color: var(--white); }
-    .services .sec-desc { color: rgba(255,255,255,0.45); }
-    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.06); margin-top: 60px; }
+    /* ───────── SERVICES (Lighter) ───────── */
+    .services { background: #eef4eb; }
+    .services .sec-eyebrow { color: var(--dark); }
+    .services .sec-eyebrow::before { background: var(--dark); }
+    .services .sec-title { color: var(--dark); }
+    .services .sec-title em { color: var(--dark); }
+    .services .sec-desc { color: var(--muted); }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(0,0,0,0.07); margin-top: 60px; }
     .service-card {
-      background: var(--dark); padding: 48px 40px;
+      background: var(--white); padding: 48px 40px;
       transition: background 0.3s; position: relative; overflow: hidden;
     }
     .service-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: var(--champagne); transform: scaleX(0); transform-origin: left;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--yellow); transform: scaleX(0); transform-origin: left;
       transition: transform 0.4s;
     }
-    .service-card:hover { background: var(--dark-soft); }
+    .service-card:hover { background: var(--cream); }
     .service-card:hover::before { transform: scaleX(1); }
     .service-num {
       font-family: 'Bodoni Moda', serif; font-size: 3.5rem;
-      font-weight: 300; color: rgba(255,255,255,0.06); line-height: 1;
+      font-weight: 300; color: rgba(26,66,40,0.08); line-height: 1;
       margin-bottom: 24px; display: block;
     }
     .service-card h3 {
       font-family: 'Bodoni Moda', serif; font-size: 1.5rem;
-      font-weight: 500; color: var(--white); margin-bottom: 14px; letter-spacing: 0.01em;
+      font-weight: 500; color: var(--dark); margin-bottom: 14px; letter-spacing: 0.01em;
     }
-    .service-card p { color: rgba(255,255,255,0.45); font-size: 0.88rem; line-height: 1.8; font-weight: 300; }
+    .service-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.8; font-weight: 300; }
     .service-link {
       display: inline-flex; align-items: center; gap: 8px;
-      color: var(--champagne); font-size: 0.72rem; font-weight: 600;
+      color: var(--dark); font-size: 0.72rem; font-weight: 700;
       letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none;
-      margin-top: 24px; transition: gap 0.3s;
+      margin-top: 24px; transition: gap 0.3s, color 0.2s;
+      border-bottom: 1px solid var(--yellow); padding-bottom: 2px;
     }
-    .service-link:hover { gap: 14px; }
+    .service-link:hover { gap: 14px; color: var(--dark-soft); }
 
     /* ───────── LISTING ───────── */
     .listings { background: var(--cream); }
@@ -225,14 +230,14 @@
     .gallery-main:hover img { transform: scale(1.04); }
     .gallery-badge {
       position: absolute; top: 24px; left: 24px;
-      background: var(--champagne); color: var(--dark);
+      background: var(--yellow); color: var(--dark);
       padding: 6px 18px; font-size: 0.68rem; font-weight: 700;
       letter-spacing: 0.18em; text-transform: uppercase;
     }
     .gallery-count {
       position: absolute; bottom: 24px; right: 24px;
-      background: rgba(14,14,14,0.75); backdrop-filter: blur(8px);
-      color: rgba(255,255,255,0.8); padding: 7px 16px;
+      background: rgba(26,66,40,0.80); backdrop-filter: blur(8px);
+      color: rgba(255,255,255,0.9); padding: 7px 16px;
       font-size: 0.75rem; letter-spacing: 0.08em;
     }
     .gallery-thumbs {
@@ -240,21 +245,16 @@
       overflow-x: auto;
     }
     .gallery-thumbs::-webkit-scrollbar { height: 2px; }
-    .gallery-thumbs::-webkit-scrollbar-thumb { background: var(--champagne); }
+    .gallery-thumbs::-webkit-scrollbar-thumb { background: var(--yellow); }
     .thumb-img {
       width: 90px; height: 68px; object-fit: cover; cursor: pointer;
       opacity: 0.5; transition: opacity 0.2s; flex-shrink: 0;
       outline: 2px solid transparent; outline-offset: -2px;
     }
-    .thumb-img.active, .thumb-img:hover { opacity: 1; outline-color: var(--champagne); }
+    .thumb-img.active, .thumb-img:hover { opacity: 1; outline-color: var(--yellow); }
     .listing-body { padding: 48px; }
     .listing-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
     .listing-title-block { }
-    .listing-price {
-      font-family: 'Bodoni Moda', serif;
-      font-size: 2.4rem; font-weight: 500; color: var(--champagne); line-height: 1;
-      margin-bottom: 8px; letter-spacing: -0.01em;
-    }
     .listing-title {
       font-family: 'Bodoni Moda', serif;
       font-size: 1.6rem; font-weight: 400; color: var(--dark); margin-bottom: 8px;
@@ -263,16 +263,17 @@
       display: flex; align-items: center; gap: 6px;
       color: var(--muted); font-size: 0.82rem; font-weight: 400; letter-spacing: 0.04em;
     }
-    .listing-location svg { width: 14px; height: 14px; fill: var(--champagne); }
+    .listing-location svg { width: 14px; height: 14px; fill: var(--dark); }
+    .listing-cta-block { display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
     .listing-specs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--cream-mid); margin-bottom: 36px; }
     .spec-item { background: var(--white); padding: 18px 20px; }
     .spec-label { font-size: 0.65rem; color: var(--muted); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; }
-    .spec-value { font-size: 1rem; font-weight: 500; color: var(--dark); font-family: 'Bodoni Moda', serif; font-size: 1.05rem; }
+    .spec-value { font-size: 1.05rem; font-weight: 500; color: var(--dark); font-family: 'Bodoni Moda', serif; }
     .listing-features { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
     .feature-tag {
-      padding: 6px 16px; border: 1px solid rgba(196,164,107,0.3);
+      padding: 6px 16px; border: 1px solid rgba(26,66,40,0.20);
       color: var(--dark); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.06em;
-      background: var(--champ-dim);
+      background: var(--yellow-dim);
     }
     .listing-actions { display: flex; gap: 12px; flex-wrap: wrap; }
     .btn-dark {
@@ -281,20 +282,21 @@
       text-decoration: none; transition: all 0.25s; border: 1px solid var(--dark);
       display: inline-flex; align-items: center; gap: 10px;
     }
-    .btn-dark:hover { background: var(--champagne); color: var(--dark); border-color: var(--champagne); }
+    .btn-dark:hover { background: var(--yellow); color: var(--dark); border-color: var(--yellow); }
     .btn-outline-dark {
       background: transparent; color: var(--dark); padding: 13px 28px;
       font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
       text-decoration: none; border: 1px solid rgba(0,0,0,0.15); transition: all 0.25s;
       display: inline-flex; align-items: center; gap: 10px;
     }
-    .btn-outline-dark:hover { border-color: var(--champagne); color: var(--champagne); }
+    .btn-outline-dark:hover { border-color: var(--dark); color: var(--dark); background: var(--yellow-dim); }
 
     /* ───────── MAP ───────── */
     .map-section { background: var(--dark); padding: 100px 0 0; }
     .map-header { padding: 0 6% 60px; }
     .map-section .sec-title { color: var(--white); }
-    .map-section .sec-desc { color: rgba(255,255,255,0.4); }
+    .map-section .sec-title em { color: var(--yellow); }
+    .map-section .sec-desc { color: rgba(255,255,255,0.5); }
     #map { height: 480px; width: 100%; background: #e8e0d4; display: block; }
     .map-bar {
       background: var(--dark-soft); padding: 28px 6%;
@@ -302,8 +304,8 @@
       border-top: 1px solid var(--line);
     }
     .map-bar-item { display: flex; align-items: center; gap: 12px; }
-    .map-bar-item svg { width: 18px; height: 18px; fill: var(--champagne); flex-shrink: 0; }
-    .map-bar-item span { color: rgba(255,255,255,0.6); font-size: 0.82rem; letter-spacing: 0.04em; }
+    .map-bar-item svg { width: 18px; height: 18px; fill: var(--yellow); flex-shrink: 0; }
+    .map-bar-item span { color: rgba(255,255,255,0.65); font-size: 0.82rem; letter-spacing: 0.04em; }
 
     /* ───────── SELL ───────── */
     .sell-section { background: var(--white); }
@@ -315,17 +317,18 @@
     }
     .sell-img::after {
       content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(14,14,14,0.3) 0%, transparent 60%);
+      background: linear-gradient(135deg, rgba(26,66,40,0.35) 0%, transparent 60%);
     }
     .sell-img-badge {
       position: absolute; bottom: 0; left: 0; right: 0; z-index: 1;
-      background: rgba(14,14,14,0.82); backdrop-filter: blur(8px);
+      background: rgba(26,66,40,0.88); backdrop-filter: blur(8px);
       padding: 24px 28px;
     }
-    .sell-img-badge p { color: rgba(255,255,255,0.6); font-size: 0.75rem; letter-spacing: 0.1em; margin-bottom: 4px; font-weight: 400; text-transform: uppercase; }
+    .sell-img-badge p { color: rgba(255,255,255,0.65); font-size: 0.75rem; letter-spacing: 0.1em; margin-bottom: 4px; font-weight: 400; text-transform: uppercase; }
     .sell-img-badge strong { color: var(--white); font-family: 'Bodoni Moda', serif; font-size: 1.1rem; font-weight: 400; }
     .form-area { }
     .form-area .sec-title { margin-bottom: 8px; }
+    .form-area .sec-title em { color: var(--dark); }
     .form-area .sec-desc { margin-bottom: 36px; }
     .form-group { margin-bottom: 20px; }
     .form-group label { display: block; font-size: 0.68rem; font-weight: 600; color: var(--dark); margin-bottom: 8px; letter-spacing: 0.14em; text-transform: uppercase; }
@@ -335,17 +338,17 @@
       color: var(--dark); background: transparent; transition: border-color 0.2s;
       outline: none; font-weight: 300;
     }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-bottom-color: var(--champagne); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-bottom-color: var(--dark); }
     .form-group textarea { resize: none; min-height: 80px; }
     .form-group select { cursor: pointer; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
     .btn-submit {
       width: 100%; background: var(--dark); color: var(--white);
-      padding: 16px; border: none; font-size: 0.78rem; font-weight: 600;
+      padding: 16px; border: none; font-size: 0.78rem; font-weight: 700;
       letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer;
       transition: background 0.25s; font-family: 'DM Sans', sans-serif; margin-top: 12px;
     }
-    .btn-submit:hover { background: var(--champagne); color: var(--dark); }
+    .btn-submit:hover { background: var(--yellow); color: var(--dark); }
     .form-note { color: var(--muted); font-size: 0.72rem; text-align: center; margin-top: 12px; letter-spacing: 0.04em; }
 
     /* ───────── BUY ───────── */
@@ -353,27 +356,29 @@
     .buy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
     .buy-form-card { background: var(--dark); padding: 48px; }
     .buy-form-card .sec-title { color: var(--white); font-size: 1.8rem; margin-bottom: 6px; }
-    .buy-form-card .sec-desc { color: rgba(255,255,255,0.4); margin-bottom: 36px; }
-    .buy-form-card label { color: rgba(255,255,255,0.55) !important; }
+    .buy-form-card .sec-title em { color: var(--yellow); }
+    .buy-form-card .sec-desc { color: rgba(255,255,255,0.45); margin-bottom: 36px; }
+    .buy-form-card label { color: rgba(255,255,255,0.60) !important; }
     .buy-form-card input, .buy-form-card select, .buy-form-card textarea {
-      color: var(--white) !important; border-bottom-color: rgba(255,255,255,0.15) !important;
+      color: var(--white) !important; border-bottom-color: rgba(255,255,255,0.18) !important;
     }
     .buy-form-card input::placeholder { color: rgba(255,255,255,0.25); }
-    .buy-form-card input:focus, .buy-form-card select:focus { border-bottom-color: var(--champagne) !important; }
+    .buy-form-card input:focus, .buy-form-card select:focus { border-bottom-color: var(--yellow) !important; }
     .buy-form-card select option { background: var(--dark); }
-    .buy-form-card .btn-submit { background: var(--champagne); color: var(--dark); }
-    .buy-form-card .btn-submit:hover { background: var(--champ-lt); }
+    .buy-form-card .btn-submit { background: var(--yellow); color: var(--dark); }
+    .buy-form-card .btn-submit:hover { background: var(--yellow-lt); }
     .buy-side { padding-top: 12px; }
     .buy-side .sec-title { margin-bottom: 12px; }
+    .buy-side .sec-title em { color: var(--dark); }
     .why-list { display: flex; flex-direction: column; gap: 0; margin-top: 40px; }
     .why-item { display: flex; align-items: flex-start; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--line-dark); }
     .why-item:first-child { border-top: 1px solid var(--line-dark); }
-    .why-num { font-family: 'Bodoni Moda', serif; font-size: 1.3rem; font-weight: 400; color: var(--champagne); min-width: 28px; padding-top: 2px; }
-    .why-text h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; letter-spacing: 0.02em; }
+    .why-num { font-family: 'Bodoni Moda', serif; font-size: 1.3rem; font-weight: 400; color: var(--dark); min-width: 28px; padding-top: 2px; }
+    .why-text h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; letter-spacing: 0.02em; color: var(--dark); }
     .why-text p { color: var(--muted); font-size: 0.83rem; font-weight: 300; }
 
     /* ───────── ABOUT ───────── */
-    .about-section { background: var(--dark); }
+    .about-section { background: #eef4eb; }
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
     .about-img-col { position: relative; }
     .about-img-main {
@@ -384,43 +389,47 @@
       position: absolute; bottom: -32px; right: -32px;
       width: 200px; height: 200px;
       background: url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400&q=85&auto=format&fit=crop') center/cover no-repeat;
-      border: 4px solid var(--dark);
+      border: 4px solid #eef4eb;
       box-shadow: var(--shadow-lg);
     }
-    .about-text .sec-title { color: var(--white); margin-bottom: 24px; }
-    .about-text p { color: rgba(255,255,255,0.5); font-size: 0.9rem; font-weight: 300; line-height: 1.9; margin-bottom: 16px; }
+    .about-text .sec-eyebrow { color: var(--dark); }
+    .about-text .sec-eyebrow::before { background: var(--dark); }
+    .about-text .sec-title { color: var(--dark); margin-bottom: 24px; }
+    .about-text .sec-title em { color: var(--dark); font-style: italic; }
+    .about-text p { color: var(--muted); font-size: 0.9rem; font-weight: 300; line-height: 1.9; margin-bottom: 16px; }
     .about-address {
-      margin-top: 36px; padding: 28px; border: 1px solid var(--line);
-      background: var(--dark-soft);
+      margin-top: 36px; padding: 28px; border: 1px solid rgba(26,66,40,0.15);
+      background: var(--white);
     }
     .about-address h4 {
-      color: var(--champagne); font-size: 0.68rem; font-weight: 600;
+      color: var(--dark); font-size: 0.68rem; font-weight: 700;
       letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 16px;
     }
     .address-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
     .address-row:last-child { margin-bottom: 0; }
-    .address-row svg { width: 16px; height: 16px; fill: var(--champagne); flex-shrink: 0; margin-top: 2px; }
-    .address-row span { color: rgba(255,255,255,0.65); font-size: 0.85rem; font-weight: 300; line-height: 1.6; }
-    .address-row a { color: rgba(255,255,255,0.65); text-decoration: none; transition: color 0.2s; }
-    .address-row a:hover { color: var(--champagne); }
+    .address-row svg { width: 16px; height: 16px; fill: var(--dark); flex-shrink: 0; margin-top: 2px; }
+    .address-row span { color: var(--muted); font-size: 0.85rem; font-weight: 300; line-height: 1.6; }
+    .address-row a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .address-row a:hover { color: var(--dark); }
 
     /* ───────── FOOTER ───────── */
     footer { background: var(--dark-mid); border-top: 1px solid var(--line); padding: 72px 6% 36px; }
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; margin-bottom: 56px; }
+    .footer-logo-img { height: 48px; width: auto; object-fit: contain; margin-bottom: 16px; display: block; border-radius: 4px; }
     .footer-brand-text {
-      color: rgba(255,255,255,0.4); font-size: 0.83rem; font-weight: 300;
-      line-height: 1.85; margin-top: 20px; max-width: 300px;
+      color: rgba(255,255,255,0.45); font-size: 0.83rem; font-weight: 300;
+      line-height: 1.85; max-width: 300px;
     }
     .footer-col h4 {
-      color: var(--champagne); font-size: 0.65rem; font-weight: 700;
+      color: var(--yellow); font-size: 0.65rem; font-weight: 700;
       letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 20px;
     }
     .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
     .footer-col ul li a {
-      color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.83rem;
+      color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.83rem;
       font-weight: 300; transition: color 0.2s;
     }
-    .footer-col ul li a:hover { color: var(--champagne); }
+    .footer-col ul li a:hover { color: var(--yellow); }
     .footer-bottom {
       border-top: 1px solid var(--line); padding-top: 28px;
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
@@ -440,13 +449,13 @@
       background: none; border: none; line-height: 1; transition: color 0.2s;
       font-family: 'DM Sans', sans-serif;
     }
-    .lb-close:hover { color: var(--champagne); }
+    .lb-close:hover { color: var(--yellow); }
     .lb-nav {
       position: absolute; top: 50%; transform: translateY(-50%);
       background: none; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.6);
       font-size: 1.4rem; padding: 14px 18px; cursor: pointer; transition: all 0.2s;
     }
-    .lb-nav:hover { border-color: var(--champagne); color: var(--champagne); }
+    .lb-nav:hover { border-color: var(--yellow); color: var(--yellow); }
     .lb-prev { left: 24px; }
     .lb-next { right: 24px; }
 
@@ -454,7 +463,7 @@
     .toast {
       position: fixed; bottom: 36px; right: 36px;
       background: var(--dark); color: var(--white);
-      padding: 16px 24px; border-left: 3px solid var(--champagne);
+      padding: 16px 24px; border-left: 3px solid var(--yellow);
       box-shadow: var(--shadow-lg); font-size: 0.85rem; font-weight: 400;
       z-index: 9000; transform: translateY(80px); opacity: 0;
       transition: all 0.4s cubic-bezier(.22,.68,0,1.2);
@@ -487,67 +496,84 @@
     /* ───────── LISTING CARDS GRID ───────── */
     .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 56px; }
     @media(max-width:800px){ .cards-grid { grid-template-columns: 1fr; } }
-    .listing-summary-card { background: var(--white); overflow: hidden; box-shadow: var(--shadow); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; }
+    .listing-summary-card { background: var(--white); overflow: hidden; box-shadow: var(--shadow); transition: transform 0.3s, box-shadow 0.3s; }
     .listing-summary-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-    .card-img-wrap { position: relative; height: 280px; overflow: hidden; }
+    .card-img-wrap { position: relative; height: 280px; overflow: hidden; cursor: pointer; }
     .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
     .listing-summary-card:hover .card-img-wrap img { transform: scale(1.05); }
     .card-badge { position: absolute; top: 16px; left: 16px; padding: 5px 14px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
-    .badge-satilik { background: var(--champagne); color: var(--dark); }
+    .badge-satilik { background: var(--yellow); color: var(--dark); }
     .badge-kiralik { background: #2d6a4f; color: #fff; }
     .card-body { padding: 28px; }
-    .card-price { font-family: 'Bodoni Moda', serif; font-size: 1.6rem; font-weight: 500; color: var(--champagne); line-height: 1; margin-bottom: 6px; }
-    .card-title { font-family: 'Bodoni Moda', serif; font-size: 1.05rem; font-weight: 400; color: var(--dark); margin-bottom: 6px; }
+    .card-title { font-family: 'Bodoni Moda', serif; font-size: 1.08rem; font-weight: 400; color: var(--dark); margin-bottom: 6px; }
     .card-loc { display: flex; align-items: center; gap: 5px; color: var(--muted); font-size: 0.78rem; margin-bottom: 18px; }
-    .card-loc svg { width: 12px; height: 12px; fill: var(--champagne); }
+    .card-loc svg { width: 12px; height: 12px; fill: var(--dark); }
     .card-mini-specs { display: flex; gap: 18px; margin-bottom: 22px; }
     .mini-spec { text-align: center; }
     .mini-spec-val { font-size: 1rem; font-weight: 600; color: var(--dark); font-family: 'Bodoni Moda', serif; }
     .mini-spec-lbl { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
-    .card-separator { height: 1px; background: var(--cream-mid); margin-bottom: 22px; }
-    .btn-card-detail { width: 100%; background: var(--dark); color: var(--white); border: none; padding: 13px; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; transition: background 0.25s; }
-    .btn-card-detail:hover { background: var(--champagne); color: var(--dark); }
+    .card-separator { height: 1px; background: var(--cream-mid); margin-bottom: 18px; }
+    .card-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-card-detail { flex: 1; background: var(--white); color: var(--dark); border: 1px solid rgba(26,66,40,0.25); padding: 11px 12px; font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.25s; }
+    .btn-card-detail:hover { border-color: var(--dark); background: var(--cream); }
+    .btn-card-contact { flex: 2; background: var(--dark); color: var(--white); border: none; padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; transition: background 0.25s; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-card-contact:hover { background: var(--yellow); color: var(--dark); }
 
     /* ───────── DETAIL MODAL ───────── */
     .modal-overlay { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); align-items: stretch; justify-content: flex-end; }
     .modal-overlay.open { display: flex; }
     .modal-panel { width: min(780px, 100%); background: var(--white); overflow-y: auto; position: relative; display: flex; flex-direction: column; animation: slideIn 0.35s cubic-bezier(.22,.68,0,1.05); }
     @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
-    .modal-close { position: absolute; top: 20px; right: 20px; z-index: 10; background: rgba(14,14,14,0.6); border: none; color: #fff; width: 38px; height: 38px; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; font-family: sans-serif; }
-    .modal-close:hover { background: var(--champagne); color: var(--dark); }
+    .modal-close { position: absolute; top: 20px; right: 20px; z-index: 10; background: rgba(26,66,40,0.7); border: none; color: #fff; width: 38px; height: 38px; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; font-family: sans-serif; }
+    .modal-close:hover { background: var(--yellow); color: var(--dark); }
     .modal-gallery { position: relative; height: 420px; overflow: hidden; flex-shrink: 0; }
     .modal-gallery img { width: 100%; height: 100%; object-fit: cover; }
     .modal-gallery-badge { position: absolute; top: 20px; left: 20px; padding: 6px 16px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
     .modal-thumbs { display: flex; gap: 4px; padding: 4px; background: var(--dark); overflow-x: auto; flex-shrink: 0; }
     .modal-thumbs::-webkit-scrollbar { height: 2px; }
-    .modal-thumbs::-webkit-scrollbar-thumb { background: var(--champagne); }
+    .modal-thumbs::-webkit-scrollbar-thumb { background: var(--yellow); }
     .modal-thumb { width: 80px; height: 60px; object-fit: cover; cursor: pointer; opacity: 0.5; transition: opacity 0.2s; flex-shrink: 0; outline: 2px solid transparent; outline-offset: -2px; }
-    .modal-thumb.active, .modal-thumb:hover { opacity: 1; outline-color: var(--champagne); }
+    .modal-thumb.active, .modal-thumb:hover { opacity: 1; outline-color: var(--yellow); }
     .modal-body { padding: 36px; flex: 1; }
-    .modal-price { font-family: 'Bodoni Moda', serif; font-size: 2rem; font-weight: 500; color: var(--champagne); line-height: 1; margin-bottom: 8px; }
-    .modal-title { font-family: 'Bodoni Moda', serif; font-size: 1.4rem; font-weight: 400; color: var(--dark); margin-bottom: 6px; }
+    .modal-title { font-family: 'Bodoni Moda', serif; font-size: 1.5rem; font-weight: 400; color: var(--dark); margin-bottom: 8px; line-height: 1.25; }
     .modal-loc { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 0.82rem; margin-bottom: 28px; }
-    .modal-loc svg { width: 14px; height: 14px; fill: var(--champagne); }
+    .modal-loc svg { width: 14px; height: 14px; fill: var(--dark); }
     .modal-specs { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--cream-mid); margin-bottom: 28px; }
     .modal-spec { background: var(--white); padding: 14px 16px; }
     .modal-spec-lbl { font-size: 0.62rem; color: var(--muted); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 4px; }
     .modal-spec-val { font-size: 0.95rem; font-weight: 500; color: var(--dark); }
     .modal-features { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .modal-contact-cta {
+      background: var(--cream); border: 1px solid rgba(26,66,40,0.12);
+      padding: 28px; margin-bottom: 24px;
+    }
+    .modal-contact-cta p { font-size: 0.78rem; color: var(--muted); margin-bottom: 16px; letter-spacing: 0.04em; }
     .modal-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-    .btn-modal-cta { background: var(--dark); color: var(--white); padding: 13px 28px; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.25s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
-    .btn-modal-cta:hover { background: var(--champagne); color: var(--dark); }
-    .btn-modal-outline { background: transparent; color: var(--dark); padding: 12px 24px; border: 1px solid rgba(0,0,0,0.15); font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.25s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
-    .btn-modal-outline:hover { border-color: var(--champagne); color: var(--champagne); }
-    /* counter badge in modal gallery */
-    .modal-img-counter { position: absolute; bottom: 16px; right: 16px; background: rgba(14,14,14,0.7); color: rgba(255,255,255,0.8); padding: 5px 12px; font-size: 0.72rem; letter-spacing: 0.06em; backdrop-filter: blur(4px); }
-    .modal-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(14,14,14,0.5); border: none; color: rgba(255,255,255,0.8); font-size: 1.5rem; padding: 14px 16px; cursor: pointer; transition: background 0.2s; z-index: 5; }
-    .modal-nav:hover { background: var(--champagne); color: var(--dark); }
+    .btn-modal-cta { background: var(--dark); color: var(--white); padding: 14px 28px; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.25s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-modal-cta:hover { background: var(--yellow); color: var(--dark); }
+    .btn-modal-outline { background: transparent; color: var(--dark); padding: 13px 24px; border: 1px solid rgba(26,66,40,0.25); font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.25s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-modal-outline:hover { border-color: var(--dark); background: var(--yellow-dim); }
+    .modal-img-counter { position: absolute; bottom: 16px; right: 16px; background: rgba(26,66,40,0.75); color: rgba(255,255,255,0.9); padding: 5px 12px; font-size: 0.72rem; letter-spacing: 0.06em; backdrop-filter: blur(4px); }
+    .modal-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(26,66,40,0.55); border: none; color: rgba(255,255,255,0.9); font-size: 1.5rem; padding: 14px 16px; cursor: pointer; transition: background 0.2s; z-index: 5; }
+    .modal-nav:hover { background: var(--yellow); color: var(--dark); }
     .modal-nav-prev { left: 0; }
     .modal-nav-next { right: 0; }
 
+    /* ───────── VIDEO SECTION IN MODAL ───────── */
+    .modal-videos-section { margin-top: 12px; }
+    .modal-videos-title {
+      font-size: 0.68rem; font-weight: 700; color: var(--dark);
+      letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 14px; padding-bottom: 8px;
+      border-bottom: 2px solid var(--yellow);
+      display: inline-block;
+    }
+    .modal-videos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .modal-videos-grid video { width: 100%; border-radius: 2px; background: #000; max-height: 220px; object-fit: cover; }
+
     /* ───────── GOOGLE MAP ───────── */
     .gmap-wrap { width: 100%; overflow: hidden; display: block; }
-    .gmap-wrap iframe { width: 100%; height: 460px; border: 0; display: block; filter: grayscale(15%); }
+    .gmap-wrap iframe { width: 100%; height: 460px; border: 0; display: block; filter: grayscale(10%); }
   </style>
 </head>
 <body>
@@ -555,13 +581,7 @@
 <!-- ═══ NAV ═══ -->
 <nav id="nav">
   <a href="#" class="nav-logo">
-    <div class="nav-logo-mark">
-      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-    </div>
-    <div>
-      <div class="nav-logo-text">Hidayet Pelit</div>
-      <div class="nav-logo-sub">Gayrimenkul</div>
-    </div>
+    <img src="logo.png" alt="Hidayet Pelit Gayrimenkul Logo">
   </a>
   <ul class="nav-links">
     <li><a href="#ilanlar">İlanlar</a></li>
@@ -570,7 +590,7 @@
     <li><a href="#al">Ev Arıyorum</a></li>
     <li><a href="#hakkimizda">Hakkımızda</a></li>
   </ul>
-  <a href="tel:+905366933271" class="nav-cta">İletişim</a>
+  <a href="#sat" class="nav-cta">İletişime Geç</a>
   <div class="nav-hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
   </div>
@@ -596,7 +616,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
           İlanları Gör
         </a>
-        <a href="#sat" class="btn-ghost">Mülkünüzü Satın</a>
+        <a href="#sat" class="btn-ghost">İletişime Geç</a>
       </div>
     </div>
     <div class="hero-right">
@@ -621,7 +641,7 @@
 <!-- ═══ SERVICES ═══ -->
 <section class="services">
   <div class="sec-eyebrow">Hizmetlerimiz</div>
-  <div class="sec-title" style="color:var(--white)">Size Nasıl <em>Yardımcı Olabiliriz?</em></div>
+  <div class="sec-title">Size Nasıl <em>Yardımcı Olabiliriz?</em></div>
   <div class="services-grid">
     <div class="service-card">
       <span class="service-num">01</span>
@@ -651,13 +671,12 @@
 
   <div class="cards-grid">
     <!-- Kart 1: Mordoğan Satılık Villa -->
-    <div class="listing-summary-card" onclick="openModal(0)">
-      <div class="card-img-wrap">
-        <img src="images/x5_1226615918kab.jpg" alt="Mordoğan Villa">
+    <div class="listing-summary-card">
+      <div class="card-img-wrap" onclick="openModal(0)">
+        <img src="images/v_1.jpg" alt="Mordoğan Villa">
         <div class="card-badge badge-satilik">Satılık</div>
       </div>
       <div class="card-body">
-        <div class="card-price">14.250.000 TL</div>
         <div class="card-title">Mordoğan AR-KO Sitesi — Deniz Manzaralı Villa</div>
         <div class="card-loc">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -670,18 +689,23 @@
           <div class="mini-spec"><div class="mini-spec-val">2</div><div class="mini-spec-lbl">Banyo</div></div>
         </div>
         <div class="card-separator"></div>
-        <button class="btn-card-detail">Detayları Gör &rsaquo;</button>
+        <div class="card-buttons">
+          <button class="btn-card-detail" onclick="openModal(0)">Detaylar</button>
+          <a href="#sat" class="btn-card-contact">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            İletişime Geç
+          </a>
+        </div>
       </div>
     </div>
 
     <!-- Kart 2: Seyrek Kiralık Dubleks -->
-    <div class="listing-summary-card" onclick="openModal(1)">
-      <div class="card-img-wrap">
+    <div class="listing-summary-card">
+      <div class="card-img-wrap" onclick="openModal(1)">
         <img src="https://imaj.emlakjet.com/listing/19139401/DCA9FA5B0713924B00F45F8ABCE53D5C19139401.jpg" alt="Seyrek Dubleks">
         <div class="card-badge badge-kiralik">Kiralık</div>
       </div>
       <div class="card-body">
-        <div class="card-price">40.000 TL<span style="font-size:0.9rem;font-weight:300;color:var(--muted)">/ay</span></div>
         <div class="card-title">Seyrek'te 3+1 Çatı Dubleks — Sıfır Daire</div>
         <div class="card-loc">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -694,7 +718,13 @@
           <div class="mini-spec"><div class="mini-spec-val">2</div><div class="mini-spec-lbl">Banyo</div></div>
         </div>
         <div class="card-separator"></div>
-        <button class="btn-card-detail">Detayları Gör &rsaquo;</button>
+        <div class="card-buttons">
+          <button class="btn-card-detail" onclick="openModal(1)">Detaylar</button>
+          <a href="#sat" class="btn-card-contact">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            İletişime Geç
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -713,20 +743,33 @@
     </div>
     <div class="modal-thumbs" id="modalThumbs"></div>
     <div class="modal-body">
-      <div class="modal-price" id="modalPrice"></div>
       <div class="modal-title" id="modalTitle"></div>
       <div class="modal-loc" id="modalLoc">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="#c4a46b"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="#1a4228"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <span id="modalLocText"></span>
       </div>
       <div class="modal-specs" id="modalSpecs"></div>
       <div class="modal-features" id="modalFeatures"></div>
-      <div class="modal-actions">
-        <a href="#sat" class="btn-modal-cta" onclick="closeModal()">Bilgi Talep Et</a>
-        <a href="tel:+905366933271" class="btn-modal-outline">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-          +90 536 693 32 71
-        </a>
+
+      <!-- İletişime Geç CTA -->
+      <div class="modal-contact-cta">
+        <p>Fiyat bilgisi ve randevu için bizimle iletişime geçin. Uzmanlarımız en kısa sürede sizi arayacak.</p>
+        <div class="modal-actions">
+          <a href="#sat" class="btn-modal-cta" onclick="closeModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            Formu Doldurun — Sizi Arayalım
+          </a>
+          <a href="tel:+905366933271" class="btn-modal-outline">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            +90 536 693 32 71
+          </a>
+        </div>
+      </div>
+
+      <!-- Video Bölümü (Mordoğan için) -->
+      <div class="modal-videos-section" id="modalVideosSection" style="display:none">
+        <div class="modal-videos-title">Videolar</div>
+        <div class="modal-videos-grid" id="modalVideosGrid"></div>
       </div>
     </div>
   </div>
@@ -735,8 +778,8 @@
 <!-- ═══ MAP ═══ -->
 <section class="map-section" id="konum">
   <div class="map-header">
-    <div class="sec-eyebrow" style="color:var(--champagne)">Bize Ulaşın</div>
-    <div class="sec-title" style="color:var(--white)">Ofisimiz <em>Çiğli'de</em></div>
+    <div class="sec-eyebrow light">Bize Ulaşın</div>
+    <div class="sec-title light-title" style="color:var(--white)">Ofisimiz <em>Çiğli'de</em></div>
     <div class="sec-desc">Küçük Çiğli Mahallesi, 8708/1 Sk. No:7 B, Çiğli / İzmir adresinde hizmetinizdeyiz.</div>
   </div>
   <div class="gmap-wrap">
@@ -755,11 +798,11 @@
     </div>
     <div class="map-bar-item">
       <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-      <span><a href="tel:+905366933271" style="color:rgba(255,255,255,0.6);text-decoration:none">+90 536 693 32 71</a></span>
+      <span><a href="tel:+905366933271" style="color:rgba(255,255,255,0.65);text-decoration:none">+90 536 693 32 71</a></span>
     </div>
     <div class="map-bar-item">
       <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-      <span><a href="mailto:info@hidayetpelitgayrimenkul.com" style="color:rgba(255,255,255,0.6);text-decoration:none">info@hidayetpelitgayrimenkul.com</a></span>
+      <span><a href="mailto:hidayetpelitgayrimenkul@gmail.com" style="color:rgba(255,255,255,0.65);text-decoration:none">hidayetpelitgayrimenkul@gmail.com</a></span>
     </div>
   </div>
 </section>
@@ -777,20 +820,21 @@
       <div class="sec-eyebrow">Mülk Sahipleri İçin</div>
       <div class="sec-title">Mülkünüzü <em>Satın</em></div>
       <div class="sec-desc">Portfolyonuzu bize teslim edin. Doğru alıcıyla en kısa sürede buluşturalım.</div>
-      <form onsubmit="submitForm(event,'sell')">
+      <form id="sellForm" onsubmit="submitForm(event,'sell')">
+        <input type="hidden" name="_subject" value="Yeni Mülk Satış Talebi – Hidayet Pelit Gayrimenkul">
         <div class="form-row">
           <div class="form-group">
             <label>Ad Soyad</label>
-            <input type="text" placeholder="Ad Soyad" required>
+            <input type="text" name="ad_soyad" placeholder="Ad Soyad" required>
           </div>
           <div class="form-group">
             <label>Telefon</label>
-            <input type="tel" placeholder="0536 693 32 71" required>
+            <input type="tel" name="telefon" placeholder="0536 693 32 71" required>
           </div>
         </div>
         <div class="form-group">
           <label>Mülk Tipi</label>
-          <select>
+          <select name="mulk_tipi">
             <option>Villa / Müstakil Ev</option>
             <option>Daire</option>
             <option>Yazlık</option>
@@ -801,16 +845,16 @@
         <div class="form-row">
           <div class="form-group">
             <label>Konum</label>
-            <input type="text" placeholder="İlçe / Semt">
+            <input type="text" name="konum" placeholder="İlçe / Semt">
           </div>
           <div class="form-group">
             <label>Tahmini Değer</label>
-            <input type="text" placeholder="₺ Tutar">
+            <input type="text" name="tahmini_deger" placeholder="₺ Tutar">
           </div>
         </div>
         <div class="form-group">
           <label>Ek Notlar</label>
-          <textarea placeholder="Mülkünüz hakkında bilgi veriniz..."></textarea>
+          <textarea name="notlar" placeholder="Mülkünüz hakkında bilgi veriniz..."></textarea>
         </div>
         <button type="submit" class="btn-submit">Portfolyoma Ekleyin</button>
         <p class="form-note">Bilgileriniz üçüncü şahıslarla paylaşılmaz.</p>
@@ -823,24 +867,25 @@
 <section class="buy-section" id="al">
   <div class="buy-grid">
     <div class="buy-form-card">
-      <div class="sec-eyebrow" style="color:var(--champagne);margin-bottom:10px">Alıcılar İçin</div>
+      <div class="sec-eyebrow light" style="margin-bottom:10px">Alıcılar İçin</div>
       <div class="sec-title" style="color:var(--white);font-size:1.8rem;margin-bottom:8px">Ev <em>Arıyorum</em></div>
-      <div class="sec-desc" style="margin-bottom:32px">Beklentilerinizi bırakın, size özel seçenekler sunalım.</div>
-      <form onsubmit="submitForm(event,'buy')">
+      <div class="sec-desc" style="margin-bottom:32px;color:rgba(255,255,255,0.5)">Beklentilerinizi bırakın, size özel seçenekler sunalım.</div>
+      <form id="buyForm" onsubmit="submitForm(event,'buy')">
+        <input type="hidden" name="_subject" value="Yeni Ev Arama Talebi – Hidayet Pelit Gayrimenkul">
         <div class="form-row">
           <div class="form-group">
             <label>Ad Soyad</label>
-            <input type="text" placeholder="Ad Soyad" required>
+            <input type="text" name="ad_soyad" placeholder="Ad Soyad" required>
           </div>
           <div class="form-group">
             <label>Telefon</label>
-            <input type="tel" placeholder="0536 693 32 71" required>
+            <input type="tel" name="telefon" placeholder="0536 693 32 71" required>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>Konut Tipi</label>
-            <select>
+            <select name="konut_tipi">
               <option>Villa / Müstakil</option>
               <option>Daire</option>
               <option>Yazlık</option>
@@ -849,7 +894,7 @@
           </div>
           <div class="form-group">
             <label>Oda Sayısı</label>
-            <select>
+            <select name="oda_sayisi">
               <option>Fark Etmez</option>
               <option>1+1</option>
               <option>2+1</option>
@@ -862,20 +907,20 @@
         <div class="form-row">
           <div class="form-group">
             <label>Min. Bütçe</label>
-            <input type="text" placeholder="₺ Min">
+            <input type="text" name="min_butce" placeholder="₺ Min">
           </div>
           <div class="form-group">
             <label>Max. Bütçe</label>
-            <input type="text" placeholder="₺ Max">
+            <input type="text" name="max_butce" placeholder="₺ Max">
           </div>
         </div>
         <div class="form-group">
           <label>Tercih Edilen Bölge</label>
-          <input type="text" placeholder="Mordoğan, Çiğli, Urla...">
+          <input type="text" name="bolge" placeholder="Mordoğan, Çiğli, Urla...">
         </div>
         <div class="form-group">
           <label>Özel İstekler</label>
-          <textarea placeholder="Deniz manzarası, havuz, bahçe..."></textarea>
+          <textarea name="istekler" placeholder="Deniz manzarası, havuz, bahçe..."></textarea>
         </div>
         <button type="submit" class="btn-submit">Beni Arayın</button>
       </form>
@@ -895,7 +940,7 @@
         <div class="why-item">
           <span class="why-num">II</span>
           <div class="why-text">
-            <h4>Geniş Alıcı & Satıcı Ağı</h4>
+            <h4>Geniş Alıcı &amp; Satıcı Ağı</h4>
             <p>Binlerce potansiyel müşteriyle anlık eşleştirme.</p>
           </div>
         </div>
@@ -926,8 +971,8 @@
       <div class="about-img-accent"></div>
     </div>
     <div class="about-text">
-      <div class="sec-eyebrow" style="color:var(--champagne)">Hakkımızda</div>
-      <div class="sec-title" style="color:var(--white)">Hidayet Pelit <em>Gayrimenkul</em></div>
+      <div class="sec-eyebrow">Hakkımızda</div>
+      <div class="sec-title">Hidayet Pelit <em>Gayrimenkul</em></div>
       <p>İzmir'in Çiğli ilçesinden hizmet veren ofisimizle, Mordoğan ve Ege kıyılarının en seçkin mülklerini portföyümüzde barındırıyoruz. 15 yılı aşkın tecrübemizle her müşterimizin beklentisini anlayıp en doğru çözümü sunmak temel prensibimizdir.</p>
       <p>Mülk satışından alımına, yatırım danışmanlığından portföy yönetimine kadar kapsamlı hizmetler sunuyoruz. Güvenilirlik ve şeffaflık her adımımızda rehberimizdir.</p>
       <div class="about-address">
@@ -942,7 +987,7 @@
         </div>
         <div class="address-row">
           <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-          <span><a href="mailto:info@hidayetpelitgayrimenkul.com">info@hidayetpelitgayrimenkul.com</a></span>
+          <span><a href="mailto:hidayetpelitgayrimenkul@gmail.com">hidayetpelitgayrimenkul@gmail.com</a></span>
         </div>
       </div>
     </div>
@@ -953,22 +998,14 @@
 <footer>
   <div class="footer-grid">
     <div>
-      <a href="#" class="nav-logo" style="text-decoration:none">
-        <div class="nav-logo-mark">
-          <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-        </div>
-        <div>
-          <div class="nav-logo-text">Hidayet Pelit</div>
-          <div class="nav-logo-sub">Gayrimenkul</div>
-        </div>
-      </a>
+      <img src="logo.png" alt="Hidayet Pelit Gayrimenkul" class="footer-logo-img">
       <p class="footer-brand-text">İzmir Çiğli'den hizmet veren güvenilir gayrimenkul danışmanınız. 15 yılı aşkın tecrübeyle hayalinizdeki mülkü buluyoruz.</p>
     </div>
     <div class="footer-col">
       <h4>Navigasyon</h4>
       <ul>
         <li><a href="#ilanlar">İlanlar</a></li>
-        <li><a href="#konum">Konum & İletişim</a></li>
+        <li><a href="#konum">Konum &amp; İletişim</a></li>
         <li><a href="#sat">Mülkünüzü Satın</a></li>
         <li><a href="#al">Ev Arıyorum</a></li>
         <li><a href="#hakkimizda">Hakkımızda</a></li>
@@ -978,7 +1015,7 @@
       <h4>İletişim</h4>
       <ul>
         <li><a href="tel:+905366933271">+90 536 693 32 71</a></li>
-        <li><a href="mailto:info@hidayetpelitgayrimenkul.com">info@hidayetpelitgayrimenkul.com</a></li>
+        <li><a href="mailto:hidayetpelitgayrimenkul@gmail.com">hidayetpelitgayrimenkul@gmail.com</a></li>
         <li><a href="#konum">Küçük Çiğli Mah.<br>8708/1 Sk. No:7 B, Çiğli/İzmir</a></li>
       </ul>
     </div>
@@ -1002,15 +1039,28 @@
   const LISTINGS = [
     {
       badge: 'SATILIK', badgeClass: 'badge-satilik',
-      price: '14.250.000 TL', priceNote: '',
       title: 'Mordoğan AR-KO Sitesi — Deniz Manzaralı Sıfır Villa',
       loc: 'Mordoğan, Urla / İzmir',
       images: [
-        'images/x5_1226615918kab.jpg','images/x5_1226615918c67.jpg',
-        'images/x5_1226615918mrc.jpg','images/x5_1226615918n23.jpg',
-        'images/x5_1226615918fvd.jpg','images/x5_1226615918gz9.jpg',
-        'images/x5_1226615918dx7.jpg','images/x5_1226615918e03.jpg',
-        'images/x5_1226615918b77.jpg','images/x5_1226615918xv8.jpg'
+        'images/v_1.jpg','images/v_2.jpg','images/v_3.jpg','images/v_4.jpg','images/v_5.jpg',
+        'images/v_6.jpg','images/v_7.jpg','images/v_8.jpg','images/v_9.jpg','images/v_10.jpg',
+        'images/v_11.jpg','images/v_12.jpg','images/v_13.jpg','images/v_14.jpg','images/v_15.jpg',
+        'images/v_16.jpg','images/v_17.jpg','images/v_18.jpg','images/v_19.jpg','images/v_20.jpg',
+        'images/v_21.jpg','images/v_22.jpg','images/v_23.jpg','images/v_24.jpg','images/v_25.jpg',
+        'images/v_26.jpg','images/v_27.jpg','images/v_28.jpg','images/v_29.jpg','images/v_30.jpg',
+        'images/v_31.jpg','images/v_32.jpg','images/v_33.jpg','images/v_34.jpg','images/v_35.jpg',
+        'images/v_36.jpg','images/v_37.jpg','images/v_38.jpg','images/v_39.jpg','images/v_40.jpg',
+        'images/v_41.jpg','images/v_42.jpg','images/v_43.jpg','images/v_44.jpg','images/v_45.jpg',
+        'images/v_46.jpg','images/v_47.jpg','images/v_48.jpg','images/v_49.jpg','images/v_50.jpg',
+        'images/v_51.jpg','images/v_52.jpg','images/v_53.jpg','images/v_54.jpg','images/v_55.jpg',
+        'images/v_56.jpg','images/v_57.jpg','images/v_58.jpg','images/v_59.jpg','images/v_60.jpg',
+        'images/v_61.jpg'
+      ],
+      videos: [
+        'images/v_video_1.mp4',
+        'images/v_video_2.mp4',
+        'images/v_video_3.mp4',
+        'images/v_video_4.mp4'
       ],
       specs: [
         {l:'Oda',v:'4 + 1'},{l:'Bina Yaşı',v:'Sıfır'},{l:'Kat Sayısı',v:'3'},
@@ -1021,7 +1071,6 @@
     },
     {
       badge: 'KİRALIK', badgeClass: 'badge-kiralik',
-      price: '40.000 TL/ay', priceNote: 'Depozito: 35.000 TL',
       title: 'Seyrek\'te 3+1 Çatı Dubleks — Sıfır Daire',
       loc: 'Seyrek (İnönü Mah.), Menemen / İzmir',
       images: [
@@ -1034,33 +1083,9 @@
         'https://imaj.emlakjet.com/listing/19139401/1B4EC443A610C7A9BAB18639B1A42BDF19139401.jpg',
         'https://imaj.emlakjet.com/listing/19139401/265692349BF1C9A0151C325FBA0AA2DF19139401.jpg',
         'https://imaj.emlakjet.com/listing/19139401/2860B408BC4E8D1A18B8D8704795842319139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/2CC0D65F1741517BDA0E6F7F5CE72A1119139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/318F307497E9638A419CABAEABC3CE7919139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/3FDCEBD723B7877FFA9953DD56BC911019139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/460A542020DEE7C65D91E369F1A31B3E19139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/466E9C2EF9167DE2B6BEE9C8F511CD5819139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/47041E962D8CD254513CCB38D300928919139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/481CD783F3D46FF1C870324D5D96DCD219139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/53A28B0D032F3D8C394BECC4FC5DFDCD19139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/5BBCD1AF8E89D3D1AB14D8112F4B0A3619139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/5F1031ACDA5B5227D4CFD4BE42B714B219139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/618A2896C397CE356F631F9FA104CBB619139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/6FA725FF5F43B4445632D04F44FFBFDD19139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/7646A5C6831815EEE704A55E9E054DC119139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/7E3D1908643EA3D6B7EB0CED958C184C19139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/8C07CB0BD978038CDEA950747091BBA619139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/A1F37C5CC211CAD29A9B7C5D9D1DD4C419139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/A959C8D5F713BD621A4171C838EE3DBE19139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/B5ACC9649B4CF2C8E33973BE5B6108FD19139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/B9C67F910408D08ECD8918D2DFAE993C19139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/BBE1F207400918DE44C6A5E6BFB1428819139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/C7A52C920201467977A25E5B7B1C0FC219139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/D301542EB8D6CD11056081644D803CAB19139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/D72C9D02059EDAE387730A1108A6BF3D19139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/E1EB539B793BF8B98C00A46A940BA49A19139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/F0EF7A303F86B40023C25D45BB4261D119139401.jpg',
-        'https://imaj.emlakjet.com/listing/19139401/F6ED2E2B28EDAE032A39BC4FEC65A1E119139401.jpg'
+        'https://imaj.emlakjet.com/listing/19139401/2CC0D65F1741517BDA0E6F7F5CE72A1119139401.jpg'
       ],
+      videos: [],
       specs: [
         {l:'Oda',v:'3 + 1'},{l:'Tip',v:'Çatı Dubleks'},{l:'Net Alan',v:'120 m²'},
         {l:'Brüt Alan',v:'130 m²'},{l:'Bina Yaşı',v:'Sıfır'},{l:'Kat Sayısı',v:'4'},
@@ -1099,13 +1124,6 @@
     });
 
     // Text
-    document.getElementById('modalPrice').textContent = d.price;
-    if (d.priceNote) {
-      const note = document.createElement('div');
-      note.style.cssText = 'font-size:0.8rem;color:var(--muted);font-weight:400;font-family:"DM Sans",sans-serif;margin-top:4px';
-      note.textContent = d.priceNote;
-      document.getElementById('modalPrice').appendChild(note);
-    }
     document.getElementById('modalTitle').textContent = d.title;
     document.getElementById('modalLocText').textContent = d.loc;
 
@@ -1116,6 +1134,21 @@
     // Features
     const featsEl = document.getElementById('modalFeatures');
     featsEl.innerHTML = d.features.map(f=>`<span class="feature-tag">${f}</span>`).join('');
+
+    // Videos
+    const videoSection = document.getElementById('modalVideosSection');
+    const videosGrid = document.getElementById('modalVideosGrid');
+    if (d.videos && d.videos.length > 0) {
+      videosGrid.innerHTML = d.videos.map(src =>
+        `<video controls preload="none" poster="">
+          <source src="${src}" type="video/mp4">
+        </video>`
+      ).join('');
+      videoSection.style.display = 'block';
+    } else {
+      videoSection.style.display = 'none';
+      videosGrid.innerHTML = '';
+    }
 
     document.getElementById('modalOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -1128,7 +1161,6 @@
     document.getElementById('modalMainImg').src = imgs[modalCurIdx];
     document.getElementById('modalCounter').textContent = (modalCurIdx+1) + ' / ' + imgs.length;
     document.querySelectorAll('.modal-thumb').forEach((t,i) => t.classList.toggle('active', i===modalCurIdx));
-    // scroll thumb into view
     const thumbs = document.getElementById('modalThumbs');
     const active = thumbs.children[modalCurIdx];
     if (active) active.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
@@ -1137,6 +1169,8 @@
   function modalImgNav(dir, e) { e.stopPropagation(); setModalImg(modalCurIdx + dir); }
 
   function closeModal() {
+    // Pause all videos in modal
+    document.querySelectorAll('#modalVideosGrid video').forEach(v => v.pause());
     document.getElementById('modalOverlay').classList.remove('open');
     document.body.style.overflow = '';
   }
@@ -1151,15 +1185,47 @@
     }
   });
 
-  // FORMS
-  function submitForm(e, type) {
+  // ═══ FORMS — FormSubmit.co AJAX ═══
+  async function submitForm(e, type) {
     e.preventDefault();
-    const msg = type === 'sell' ? 'Formunuz alındı. Kısa sürede sizi arayacağız.' : 'Talebiniz iletildi. Sizi arayacağız.';
+    const form = e.target;
+    const btn = form.querySelector('.btn-submit');
+    const originalText = btn.textContent;
+    btn.textContent = 'Gönderiliyor...';
+    btn.disabled = true;
+
+    const formData = new FormData(form);
+    const data = {};
+    formData.forEach((v, k) => { data[k] = v; });
+
+    try {
+      const res = await fetch('https://formsubmit.co/ajax/hidayetpelitgayrimenkul@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const json = await res.json();
+      if (json.success === 'true' || json.success === true) {
+        showToast(type === 'sell'
+          ? 'Formunuz alındı. Kısa sürede sizi arayacağız.'
+          : 'Talebiniz iletildi. Sizi arayacağız.');
+        form.reset();
+      } else {
+        showToast('Bir hata oluştu. Lütfen tekrar deneyin veya bizi arayın.');
+      }
+    } catch (err) {
+      showToast('Bağlantı hatası. Lütfen +90 536 693 32 71 numaralı hattı arayın.');
+    }
+
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+
+  function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 4000);
-    e.target.reset();
+    setTimeout(() => t.classList.remove('show'), 4500);
   }
 
   // MOBILE MENU
