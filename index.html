@@ -507,6 +507,27 @@
       .buy-form-card { padding: 32px 24px; }
     }
 
+    /* ───────── VILLA VIDEOS ───────── */
+    .villa-videos { margin-top: 64px; }
+    .villa-videos-header { margin-bottom: 28px; }
+    .villa-videos-title {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+      font-weight: 400; color: var(--dark); letter-spacing: -0.01em;
+    }
+    .villa-videos-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+    }
+    @media(max-width:700px){ .villa-videos-grid { grid-template-columns: 1fr; } }
+    .villa-video-wrap {
+      background: #000; border-radius: 3px; overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .villa-video-wrap video {
+      width: 100%; display: block;
+      max-height: 320px; object-fit: cover;
+    }
+
     /* ───────── LISTING CARDS GRID ───────── */
     .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 56px; }
     @media(max-width:800px){ .cards-grid { grid-template-columns: 1fr; } }
@@ -739,6 +760,36 @@
             İletişime Geç
           </a>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mordoğan Villa Videoları -->
+  <div class="villa-videos" id="villaVideos">
+    <div class="villa-videos-header">
+      <div class="sec-eyebrow" style="margin-bottom:8px">Mordoğan AR-KO Sitesi Villa</div>
+      <div class="villa-videos-title">Tanıtım Videoları</div>
+    </div>
+    <div class="villa-videos-grid" id="villaVideosGrid">
+      <div class="villa-video-wrap">
+        <video controls preload="none">
+          <source src="images/v_video_1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="villa-video-wrap">
+        <video controls preload="none">
+          <source src="images/v_video_2.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="villa-video-wrap">
+        <video controls preload="none">
+          <source src="images/v_video_3.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="villa-video-wrap">
+        <video controls preload="none">
+          <source src="images/v_video_4.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
   </div>
