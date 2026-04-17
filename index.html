@@ -97,7 +97,7 @@
     /* ───────── HERO ───────── */
     .hero {
       height: 100vh; min-height: 600px; position: relative;
-      display: flex; align-items: flex-end; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
     .hero-img {
       position: absolute; inset: 0;
@@ -105,29 +105,41 @@
     }
     .hero-img::after {
       content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(26,66,40,0.88) 0%, rgba(26,66,40,0.30) 45%, rgba(26,66,40,0.08) 100%);
+      background: linear-gradient(to bottom, rgba(26,66,40,0.72) 0%, rgba(26,66,40,0.55) 50%, rgba(26,66,40,0.82) 100%);
     }
     .hero-content {
       position: relative; z-index: 2;
-      padding: 0 6% 80px; width: 100%;
-      display: grid; grid-template-columns: 1fr 1fr; align-items: flex-end; gap: 40px;
+      padding: 0 6%; width: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; gap: 0;
     }
-    .hero-left { }
+    .hero-logo-big {
+      width: clamp(280px, 55vw, 720px);
+      max-width: 88%;
+      display: block;
+      margin: 0 auto 36px;
+      filter: drop-shadow(0 8px 40px rgba(0,0,0,0.55));
+      animation: heroLogoIn 0.9s cubic-bezier(.22,.68,0,1.05) both;
+    }
+    @keyframes heroLogoIn {
+      from { opacity: 0; transform: scale(0.88) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .hero-tagline {
+      color: rgba(255,255,255,0.82); font-size: clamp(0.85rem, 1.8vw, 1.1rem);
+      font-weight: 300; letter-spacing: 0.22em; text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+    .hero-tagline span { color: var(--yellow); }
     .hero-eyebrow {
       display: flex; align-items: center; gap: 12px;
       color: var(--yellow); font-size: 0.7rem; font-weight: 500;
       letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 20px;
+      justify-content: center;
     }
     .hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--yellow); }
-    .hero h1 {
-      font-family: 'Bodoni Moda', serif;
-      font-size: clamp(2.8rem, 5.5vw, 5rem);
-      font-weight: 300; color: var(--white); line-height: 1.1;
-      margin-bottom: 28px; letter-spacing: -0.01em;
-    }
-    .hero h1 em { font-style: italic; color: var(--yellow); }
-    .hero-desc { color: rgba(255,255,255,0.7); font-size: 0.95rem; max-width: 420px; margin-bottom: 40px; font-weight: 300; }
-    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero-eyebrow::after  { content: ''; width: 32px; height: 1px; background: var(--yellow); }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
     .btn-primary {
       background: var(--yellow); color: var(--dark);
       padding: 14px 36px; font-size: 0.78rem; font-weight: 700;
@@ -143,7 +155,7 @@
       display: inline-flex; align-items: center; gap: 10px;
     }
     .btn-ghost:hover { border-color: var(--yellow); color: var(--yellow); }
-    .hero-right { }
+    .hero-right { display: none; }
     .hero-stats { display: flex; flex-direction: column; gap: 0; align-items: flex-end; }
     .hero-stat-row { display: flex; align-items: baseline; gap: 10px; padding: 16px 0; border-top: 1px solid var(--line); width: 100%; justify-content: flex-end; }
     .hero-stat-row:last-child { border-bottom: 1px solid var(--line); }
@@ -152,6 +164,24 @@
       font-weight: 400; color: var(--yellow); line-height: 1;
     }
     .stat-label { color: rgba(255,255,255,0.55); font-size: 0.75rem; font-weight: 400; letter-spacing: 0.08em; }
+
+    /* ───────── HERO STATS BAR ───────── */
+    .hero-stats-bar {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
+      background: rgba(26,66,40,0.88); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      display: flex; justify-content: center; align-items: stretch;
+    }
+    .hero-stats-bar-item {
+      flex: 1; max-width: 220px; padding: 22px 24px; text-align: center;
+      border-right: 1px solid var(--line);
+    }
+    .hero-stats-bar-item:last-child { border-right: none; }
+    .hsb-num {
+      font-family: 'Bodoni Moda', serif; font-size: 2rem;
+      font-weight: 400; color: var(--yellow); line-height: 1; display: block;
+    }
+    .hsb-lbl { color: rgba(255,255,255,0.5); font-size: 0.72rem; font-weight: 400; letter-spacing: 0.1em; margin-top: 4px; display: block; }
 
     /* ───────── DIVIDER ───────── */
     .divider {
@@ -377,18 +407,59 @@
     .why-text h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; letter-spacing: 0.02em; color: var(--dark); }
     .why-text p { color: var(--muted); font-size: 0.83rem; font-weight: 300; }
 
+    /* ───────── FIRMA GALERISI ───────── */
+    .firma-galeri { background: var(--dark); padding: 100px 6%; }
+    .firma-galeri .sec-eyebrow { color: var(--yellow); }
+    .firma-galeri .sec-eyebrow::before { background: var(--yellow); }
+    .firma-galeri .sec-title { color: var(--white); margin-bottom: 56px; }
+    .firma-galeri .sec-title em { color: var(--yellow); }
+    .firma-galeri-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 10px;
+    }
+    .firma-galeri-grid .fg-item { overflow: hidden; cursor: pointer; position: relative; }
+    .firma-galeri-grid .fg-item img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.6s cubic-bezier(.25,.46,.45,.94);
+    }
+    .firma-galeri-grid .fg-item:hover img { transform: scale(1.06); }
+    .fg-item-1 { grid-column: 1 / 3; grid-row: 1; height: 420px; }
+    .fg-item-2 { grid-column: 3;     grid-row: 1; height: 420px; }
+    .fg-item-3 { grid-column: 1;     grid-row: 2; height: 300px; }
+    .fg-item-4 { grid-column: 2;     grid-row: 2; height: 300px; }
+    .fg-item-5 { grid-column: 3;     grid-row: 2; height: 300px; }
+    .fg-item::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(26,66,40,0.22) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    @media(max-width:960px){
+      .firma-galeri-grid { grid-template-columns: 1fr 1fr; }
+      .fg-item-1 { grid-column: 1/3; grid-row:1; height:320px; }
+      .fg-item-2 { grid-column: 1;   grid-row:2; height:220px; }
+      .fg-item-3 { grid-column: 2;   grid-row:2; height:220px; }
+      .fg-item-4 { grid-column: 1;   grid-row:3; height:220px; }
+      .fg-item-5 { grid-column: 2;   grid-row:3; height:220px; }
+    }
+    @media(max-width:600px){
+      .firma-galeri-grid { grid-template-columns: 1fr; }
+      .fg-item-1,.fg-item-2,.fg-item-3,.fg-item-4,.fg-item-5 { grid-column:1; grid-row:auto; height:240px; }
+    }
+
     /* ───────── ABOUT ───────── */
     .about-section { background: #eef4eb; }
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
     .about-img-col { position: relative; }
     .about-img-main {
       height: 560px; overflow: hidden;
-      background: url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&q=85&auto=format&fit=crop') center/cover no-repeat;
+      background: url('images/ofis_1.jpg') center/cover no-repeat;
     }
     .about-img-accent {
       position: absolute; bottom: -32px; right: -32px;
       width: 200px; height: 200px;
-      background: url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400&q=85&auto=format&fit=crop') center/cover no-repeat;
+      background: url('images/ofis_5.jpg') center/cover no-repeat;
       border: 4px solid #eef4eb;
       box-shadow: var(--shadow-lg);
     }
@@ -624,6 +695,7 @@
     <li><a href="#sat">Mülkünüzü Satın</a></li>
     <li><a href="#al">Ev Arıyorum</a></li>
     <li><a href="#hakkimizda">Hakkımızda</a></li>
+    <li><a href="#firma-galeri">Galeri</a></li>
   </ul>
   <a href="#sat" class="nav-cta">İletişime Geç</a>
   <div class="nav-hamburger" onclick="toggleMenu()">
@@ -632,6 +704,7 @@
 </nav>
 <div class="mobile-menu" id="mobileMenu">
   <a href="#ilanlar" onclick="toggleMenu()">İlanlar</a>
+  <a href="#firma-galeri" onclick="toggleMenu()">Galeri</a>
   <a href="#konum" onclick="toggleMenu()">Konum</a>
   <a href="#sat" onclick="toggleMenu()">Mülkünüzü Satın</a>
   <a href="#al" onclick="toggleMenu()">Ev Arıyorum</a>
@@ -642,33 +715,29 @@
 <section class="hero" id="home">
   <div class="hero-img"></div>
   <div class="hero-content">
-    <div class="hero-left">
-      <div class="hero-eyebrow">İzmir · Mordoğan · Çiğli</div>
-      <h1>Hayalinizdeki<br><em>Evi Buluyoruz</em></h1>
-      <p class="hero-desc">Ege'nin en gözde lokasyonlarında seçkin mülkler. Her bütçeye, her beklentiye uygun çözümler.</p>
-      <div class="hero-actions">
-        <a href="#ilanlar" class="btn-primary">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-          İlanları Gör
-        </a>
-        <a href="#sat" class="btn-ghost">İletişime Geç</a>
-      </div>
+    <img src="logo.png" alt="Hidayet Pelit Gayrimenkul" class="hero-logo-big">
+    <div class="hero-eyebrow">İzmir · Mordoğan · Çiğli</div>
+    <p class="hero-tagline">İzmir'in <span>Güvenilir</span> Gayrimenkul Uzmanı</p>
+    <div class="hero-actions">
+      <a href="#ilanlar" class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        İlanları Gör
+      </a>
+      <a href="#sat" class="btn-ghost">İletişime Geç</a>
     </div>
-    <div class="hero-right">
-      <div class="hero-stats">
-        <div class="hero-stat-row">
-          <span class="stat-label">Yıllık Tecrübe</span>
-          <span class="stat-num">15+</span>
-        </div>
-        <div class="hero-stat-row">
-          <span class="stat-label">Satılan Mülk</span>
-          <span class="stat-num">200+</span>
-        </div>
-        <div class="hero-stat-row">
-          <span class="stat-label">Memnun Müşteri</span>
-          <span class="stat-num">%98</span>
-        </div>
-      </div>
+  </div>
+  <div class="hero-stats-bar">
+    <div class="hero-stats-bar-item">
+      <span class="hsb-num">15+</span>
+      <span class="hsb-lbl">Yıllık Tecrübe</span>
+    </div>
+    <div class="hero-stats-bar-item">
+      <span class="hsb-num">200+</span>
+      <span class="hsb-lbl">Satılan Mülk</span>
+    </div>
+    <div class="hero-stats-bar-item">
+      <span class="hsb-num">%98</span>
+      <span class="hsb-lbl">Memnun Müşteri</span>
     </div>
   </div>
 </section>
@@ -695,6 +764,29 @@
       <h3>Yatırım Danışmanlığı</h3>
       <p>Mordoğan ve İzmir'in yükselen bölgelerinde değer artışı en yüksek mülkleri belirliyoruz. Portföyünüzü büyütmek için doğru yatırım kararlarını birlikte alıyoruz.</p>
       <a href="#konum" class="service-link">Bölge Analizi →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FIRMA GALERİSİ ═══ -->
+<section class="firma-galeri" id="firma-galeri">
+  <div class="sec-eyebrow light">Biz Kimiz</div>
+  <div class="sec-title light-title">Ofisimizden <em>Kareler</em></div>
+  <div class="firma-galeri-grid" id="firmaGaleri">
+    <div class="fg-item fg-item-1" onclick="fgOpen(0)">
+      <img src="images/ofis_1.jpg" alt="Hidayet Pelit Gayrimenkul Ofis">
+    </div>
+    <div class="fg-item fg-item-2" onclick="fgOpen(1)">
+      <img src="images/ofis_2.jpg" alt="Hidayet Pelit Gayrimenkul Ofis">
+    </div>
+    <div class="fg-item fg-item-3" onclick="fgOpen(2)">
+      <img src="images/ofis_3.jpg" alt="Hidayet Pelit Gayrimenkul Ofis">
+    </div>
+    <div class="fg-item fg-item-4" onclick="fgOpen(3)">
+      <img src="images/ofis_4.jpg" alt="Hidayet Pelit Gayrimenkul Ofis">
+    </div>
+    <div class="fg-item fg-item-5" onclick="fgOpen(4)">
+      <img src="images/ofis_5.jpg" alt="Hidayet Pelit Gayrimenkul Ofis">
     </div>
   </div>
 </section>
@@ -1108,6 +1200,34 @@
   window.addEventListener('scroll', () => {
     document.getElementById('nav').classList.toggle('scrolled', scrollY > 40);
   });
+
+  // ═══ FİRMA GALERİSİ LIGHTBOX ═══
+  const FG_IMGS = [
+    'images/ofis_1.jpg','images/ofis_2.jpg','images/ofis_3.jpg',
+    'images/ofis_4.jpg','images/ofis_5.jpg'
+  ];
+  let fgCur = 0;
+  function fgOpen(i) {
+    fgCur = i;
+    document.getElementById('fsImg').src = FG_IMGS[i];
+    document.getElementById('fsCounter').textContent = (i+1) + ' / ' + FG_IMGS.length;
+    document.getElementById('fsLightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    // override nav functions for fg
+    document.getElementById('fsLightbox')._mode = 'fg';
+  }
+  // patch fsNav to handle both gallery modes
+  const _origFsNav = window.fsNav;
+  window.fsNav = function(dir, e) {
+    if(e) e.stopPropagation();
+    if(document.getElementById('fsLightbox')._mode === 'fg') {
+      fgCur = (fgCur + dir + FG_IMGS.length) % FG_IMGS.length;
+      document.getElementById('fsImg').src = FG_IMGS[fgCur];
+      document.getElementById('fsCounter').textContent = (fgCur+1) + ' / ' + FG_IMGS.length;
+    } else if(typeof _origFsNav === 'function') {
+      _origFsNav(dir, e);
+    }
+  };
 
   // ═══ LISTING DATA ═══
   const LISTINGS = [
